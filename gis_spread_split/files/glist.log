@@ -1,0 +1,51 @@
+----------------------------------------------
+raster files available in mapset <WebGis>:
+Corine_raster_modelAlbini               kw
+Corine_raster_modelScott                m
+Ed                                      m1
+Ew                                      m2
+FFMCPrev0                               m3
+FFMCPrev1                               modelAlbini
+FFMCPrev10                              modelScott
+FFMCPrev11                              mois
+FFMCPrev12                              mois_1h1_temp_for_current
+FFMCPrev13                              mois_l
+FFMCPrev14                              mois_l0
+FFMCPrev15                              mois_l00
+FFMCPrev16                              mois_live1_temp_for_current
+FFMCPrev17                              mois_live_H
+FFMCPrev18                              mois_live_T
+FFMCPrev19                              mois_together_temp_for_current
+FFMCPrev2                               my_ros.base
+FFMCPrev20                              my_ros.max
+FFMCPrev21                              my_ros.maxdir
+FFMCPrev22                              my_ros1_temp_for_current.base
+FFMCPrev23                              my_ros1_temp_for_current.max
+FFMCPrev3                               my_ros1_temp_for_current.maxdir
+FFMCPrev4                               prec0
+FFMCPrev5                               prec12
+FFMCPrev6                               prec15
+FFMCPrev7                               prec18
+FFMCPrev8                               prec21
+FFMCPrev9                               prec24
+FFMC_DHMZ                               prec3
+FWI                                     prec6
+FWI_DHMZ                                prec9
+Mo                                      preklapanje
+Mr                                      slope
+aspect                                  voda
+el                                      w_dir
+k1                                      w_dir1
+kd                                      w_dir1_temp_for_current
+ko                                      w_dir2_temp_for_current
+kopno                                   w_speed
+kopno.grown                             w_speed1
+kopno2                                  w_speed1_temp_for_current
+kopno2.blue                             w_speed2_temp_for_current
+kopno2.green                            wind_eruptive_dir
+kopno2.red                              wind_eruptive_speed
+kopno3                                  wind_parameter
+kopno_bck_old
+
+
+----------------------------------------------

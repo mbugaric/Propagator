@@ -1,0 +1,18 @@
+REMOVE [wind_dir_temp_damirstar]
+ raster   
+ header   
+ category 
+ color    MISSING
+ history  
+ misc     
+ fcell    
+ g3dcell  MISSING
+REMOVE [wind_speed_temp_damirstar]
+ raster   
+ header   
+ category 
+ color    MISSING
+ history  
+ misc     
+ fcell    
+ g3dcell  MISSING

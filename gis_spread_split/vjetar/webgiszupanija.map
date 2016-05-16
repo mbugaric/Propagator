@@ -1,0 +1,250 @@
+#
+# Start of map file
+#
+MAP
+NAME "zupanija"
+STATUS ON
+#SIZE 700 772
+EXTENT 600000 4750022 6698265 4898023
+SIZE 3400 3400
+#EXTENT 6614291.30614 4800033.72806 6669872.60106 4857817.88121
+
+
+UNITS METERS
+IMAGECOLOR 225 225 225
+TRANSPARENT ON
+IMAGETYPE PNG
+CONFIG "CGI_CONTEXT_URL" "1"
+CONFIG "PROJ_LIB" "/usr/local/share/proj/"
+FONTSET "./fonts/fonts.list"
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+  outputformat
+    name "image/png"
+    driver "GD/PNG"
+    imagemode "rgba"
+    extension "png"
+    mimetype "image/png"
+    imagemode RGBA
+    TRANSPARENT ON
+    FORMATOPTION "INTERLACE=OFF"
+  end
+
+
+
+#
+# Start of web interface definition
+#
+WEB
+TEMPLATE /var/www/gis2/gis/map.html
+IMAGEPATH /var/www/gis_data/mapserver/temp/
+IMAGEURL "/gis_data/mapserver/temp/"
+LOG /var/www/gis2/gis/maplog
+    METADATA
+      WMS_TITLE "Test WMS"
+      WMS_ABSTRACT "Testna verzija WMS-a"
+      WMS_ONLINERESOURCE "http://192.168.0.30/cgi-bin/mapserv?map=/var/www/gis2/gis/webgiszupanija.map&FORMAT=image%2Fpng&"
+      WMS_SRS "epsg:4326 epsg:2805 epsg:24600 epsg:54004 epsg:900913" 
+      #"wms_srs" "epsg:4326 epsg:32767 epsg:900913" 
+    END
+
+END
+
+#
+# Start of reference map
+#
+REFERENCE
+IMAGE "ref1.png"
+EXTENT 6582819 4718053 6722262 4890293
+STATUS ON
+COLOR -1 -1 -1
+OUTLINECOLOR 255 0 0
+SIZE 95 95
+END
+
+#
+# Start of legend
+#
+LEGEND
+KEYSIZE 18 12
+LABEL
+TYPE BITMAP
+SIZE MEDIUM
+COLOR 0 0 89
+END
+STATUS ON
+END
+
+#
+# Start of scalebar
+#
+SCALEBAR
+IMAGECOLOR 255 255 255
+LABEL
+COLOR 0 0 0
+SIZE SMALL
+END
+SIZE 350 5
+COLOR 255 255 255
+BACKGROUNDCOLOR 0 0 0
+OUTLINECOLOR 0 0 0
+UNITS kilometers
+INTERVALS 5
+STATUS ON
+END
+
+LAYER
+  NAME "reljef"
+  TYPE RASTER
+STATUS OFF
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+METADATA
+	WMS_TITLE "reljef"
+	WMS_ABSTRACT "Splitsko dalmatinska zupanija - reljef"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+TRANSPARENCY  100 
+  DATA "/var/www/gis_data/reljef.tif"
+END
+
+LAYER
+NAME "Spread_vector"
+TYPE LINE
+STATUS OFF
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+METADATA
+	WMS_TITLE "spread_vector"
+	WMS_ABSTRACT "Splitsko dalmatinska zupanija - reljef"
+	WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+  DATA /var/www/gis_spread/split_spread/user_files/admin/vector/spread_shape2.shp
+
+CLASS
+COLOR 0 0 0
+NAME "My layer legend"
+END # end of class
+END # end of layer Spread_vector#
+
+
+LAYER
+  NAME "Spread_raster"
+  TYPE RASTER
+  OFFSITE  255 255 0
+  TRANSPARENCY  65
+STATUS OFF
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+METADATA
+	WMS_TITLE "spread_raster"
+	WMS_ABSTRACT "Spread raster"
+	WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+  DATA /var/www/gis_spread/split_spread/user_files/admin/raster/spread_rast.tif
+
+END # end of layer Spread_raster#
+
+LAYER
+NAME "wind"
+STATUS ON
+TRANSPARENCY 0
+TYPE POINT
+FEATURE
+POINTS
+     #   6622410 4800022
+      #  6632410 4810022
+
+      6614291.30614 4800033.72806 
+      6669872.60106 4857817.88121
+
+END
+TEXT "2"
+
+END 
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+
+METADATA
+	WMS_TITLE "wind"
+	WMS_ABSTRACT "wind"
+	WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+CLASS
+	NAME "Vjetar"
+    STYLE
+      #COLOR 255 0 0
+      ANTIALIAS TRUE
+    END 
+	LABEL
+		TYPE truetype
+		FONT "wind_arrows"
+		SIZE 150
+		COLOR 0 0 0
+		ANTIALIAS true
+		ANGLE 0
+		BUFFER 4
+		PARTIALS true
+	END
+END
+
+END # end of layer Wind#
+
+
+
+#
+# Start of query definitions
+#
+QUERYMAP
+STATUS ON
+STYLE HILITE
+END
+
+
+
+END
+

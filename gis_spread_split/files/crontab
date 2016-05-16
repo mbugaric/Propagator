@@ -1,0 +1,26 @@
+#CRONTAB file automatically generated using gis_functions
+	
+#Get wind, prec, TRH2m data
+#AdriaFireGIS returns false results if started at 00
+10,30 * * * * php /home/holistic/meteoArhiva//getMeteoDataHolistic.php
+00 14 * * * php "/home/holistic/meteoArhiva//checkMeteoObtainWorksHolistic.php"
+#Calculate FWI components
+12 2,5,8,11,14,17,20,23 * * * php /home/holistic/meteoArhiva//calculateFWI.php
+
+#Calculate eruptive risk layer
+20 2,5,8,11,14,17,20,23 * * * /home/holistic/webapp/gis_spread_split/files/calculate_eruptive_risk_launch.sh
+
+#Calculate MIRIP
+0 0 1 * * /home/holistic/webapp/gis_spread_split/MIRIP/staticMIRIP_launch.sh
+30 1,4,7,10,13,16,19,22 * * * php /home/holistic/webapp/gis_spread_split/MIRIP/obtainShapeFilesMIRIP.php
+00 4 * * * /home/holistic/webapp/gis_spread_split/MIRIP/midMIRIP_launch.sh
+14 2,5,8,11,14,17,20,23 * * * /home/holistic/webapp/gis_spread_split/MIRIP/dynamicMIRIP_launch.sh
+
+#Generiranje XML file-a za panele
+#HR_Split_Marjan_1
+28 * * * * /home/holistic/webapp/gis_spread_split/MIRIP/generateXML_launch.sh
+29 * * * * php "/home/holistic/webapp/gis_spread_split/MIRIP/generateXML.php" "/home/holistic/webapp/gis_spread_split/MIRIP/HR_Split_Marjan_1.txt" "/home/holistic/webapp/gis_spread_split/MIRIP/HR_Split_Marjan_1.xml"
+#Ovo treba ic u root crontab
+#29 * * * * php "/home/holistic/webapp/gis_spread_split/MIRIP/checkPaneIsWorking.php"
+
+

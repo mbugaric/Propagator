@@ -1,0 +1,97 @@
+#
+# Start of map file
+#
+MAP
+NAME "animatedRT"
+STATUS ON
+#SIZE 700 772
+EXTENT 6582410 4750022 6698265 4898023
+SIZE 700 700
+#EXTENT 6614291.30614 4800033.72806 6669872.60106 4857817.88121
+
+
+UNITS METERS
+IMAGECOLOR 225 225 225
+TRANSPARENT ON
+IMAGETYPE PNG
+CONFIG "CGI_CONTEXT_URL" "1"
+CONFIG "PROJ_LIB" "/usr/local/share/proj/"
+FONTSET "../.././fonts/fonts.list"
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+  outputformat
+    name "image/png"
+    driver "GD/PNG"
+    imagemode "rgba"
+    extension "png"
+    mimetype "image/png"
+    imagemode RGBA
+    TRANSPARENT ON
+    FORMATOPTION "INTERLACE=OFF"
+  end
+
+
+
+#
+# Start of web interface definition
+#
+WEB
+TEMPLATE /var/www/gis/map.html
+IMAGEPATH /var/www/gis_data/mapserver/temp/
+IMAGEURL "/gis_data/mapserver/temp/"
+LOG /var/www/gis/maplog
+    METADATA
+      WMS_TITLE "Test WMS"
+      WMS_ABSTRACT "Testna verzija WMS-a"
+	  "wms_enable_request" "*"
+      WMS_ONLINERESOURCE "http://192.168.0.30/cgi-bin/mapserv?map=/var/www/gis/webgiszupanija.map&FORMAT=image%2Fpng&"
+      WMS_SRS "epsg:4326 epsg:2805 epsg:24600 epsg:54004 epsg:900913" 
+      #"wms_srs" "epsg:4326 epsg:32767 epsg:900913" 
+    END
+
+END
+
+
+#PocetakRT
+
+ #Spread_raster
+LAYER
+  NAME "Pozar0"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA WEBDIRSPREAD/user_files/admin/raster/realtime/spread_rast_10.tif
+END
+
+ #Spread_raster
+LAYER
+  NAME "Pozar1"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA WEBDIRSPREAD/user_files/admin/raster/realtime/spread_rast_50.tif
+END
+
+ #Spread_raster
+LAYER
+  NAME "Pozar2"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA WEBDIRSPREAD/user_files/admin/raster/realtime/spread_rast_100.tif
+END
+
+#KrajRT
+
+END

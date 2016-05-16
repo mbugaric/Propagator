@@ -1,0 +1,14 @@
+#palettestip .mix{
+    display: none;
+    padding: 1px;
+    border: 1px solid; 
+    width: 200px;
+	z-index: 999999 !important;
+	vertical-align: bottom !important;
+	background-color: #DFF2BF;
+}
+
+#palettestip .mix img{
+
+	width: 200px;;
+}

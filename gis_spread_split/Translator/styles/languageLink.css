@@ -1,0 +1,88 @@
+#linkCRO
+{
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 1px;
+	cursor: pointer;
+	background: url("../images/flags/Cro-gray.png") no-repeat 0 0;
+}
+#linkCRO:hover
+{
+	background: url("../images/flags/Cro.png") no-repeat 0 0;
+}
+#linkCROSelected
+{
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 1px;
+	cursor: default;
+	background: url("../images/flags/Cro.png") no-repeat 0 0;
+}
+#linkENG
+{
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 1px;
+	cursor: pointer;
+	background: url("../images/flags/Eng-gray.png") no-repeat 0 0;
+}
+#linkENG:hover
+{
+	background: url("../images/flags/Eng.png") no-repeat 0 0;
+}
+#linkENGSelected
+{
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 1px;
+	cursor: default;
+	background: url("../images/flags/Eng.png") no-repeat 0 0;
+}
+#linkGER
+{
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 1px;
+	cursor: pointer;
+	background: url("../images/flags/Ger-gray.png") no-repeat 0 0;
+}
+#linkGER:hover
+{
+	background: url("../images/flags/Ger.png") no-repeat 0 0;
+}
+#linkGERSelected
+{
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 1px;
+	cursor: default;
+	background: url("../images/flags/Ger.png") no-repeat 0 0;
+}
+#linkGRE
+{
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 1px;
+	cursor: pointer;
+	background: url("../images/flags/Gre-gray.png") no-repeat 0 0;
+}
+#linkGRE:hover
+{
+	background: url("../images/flags/Gre.png") no-repeat 0 0;
+}
+#linkGRESelected
+{
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 1px;
+	cursor: default;
+	background: url("../images/flags/Gre.png") no-repeat 0 0;
+}

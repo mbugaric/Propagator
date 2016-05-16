@@ -1,0 +1,79 @@
+MAP
+
+NAME "MIRIP_WFS"
+STATUS on
+SIZE 700 700
+EXTENT 590000 3400000 3700000 6600000
+UNITS METERS
+SHAPEPATH "shp"
+IMAGECOLOR 225 225 225
+CONFIG "CGI_CONTEXT_URL" "1"
+CONFIG "PROJ_LIB" "/usr/local/share/proj/"
+#FONTSET "../.././fonts/fonts.list"
+PROJECTION
+  "init=epsg:900913"
+END
+
+OUTPUTFORMAT
+  NAME "SHAPEZIP"
+  DRIVER "OGR/ESRI Shapefile"
+  FORMATOPTION "STORAGE=memory"
+  FORMATOPTION "FORM=zip"
+  FORMATOPTION "FILENAME=MIRIP.zip"
+END
+
+WEB
+	TEMPLATE /var/www/gis/map.html
+	IMAGEPATH /var/www/gis_data/mapserver/temp/
+	IMAGEURL "/gis_data/mapserver/temp/"
+    METADATA
+      "wfs_title"          "MIRIP_WFS" ## REQUIRED
+      "wfs_onlineresource" "http://192.168.0.30/cgi-bin/mapserv?map=/home/holistic/webapp/gis_spread_split/MIRIP/MIRIP_WFS.map&" ## Recommended
+      WMS_SRS "epsg:4326 epsg:2805 epsg:24600 epsg:54004 epsg:900913 epsg:3765 epsg:4258 epsg:3035 epsg:3857" 
+      "ows_srs"            "epsg:900913" ## Recommended
+      "wfs_abstract"       "." ## Recommended
+      "wfs_enable_request" "*"  # necessary
+      "wms_enable_request" "*"  # necessary
+      "wms_title"           "MIRIP_WFS"
+    END
+END
+
+
+
+
+#this connects to a shapefile
+LAYER
+    NAME "MIRIP_vector"
+    DATA "MIRIP_vector"
+	EXTENT 590000 3400000 3700000 6600000
+    CONNECTIONTYPE OGR
+    CONNECTION "/home/holistic/webapp/gis_data_holistic/MIRIP_vector.shp"
+    STATUS ON
+    PROJECTION
+        "init=epsg:900913"
+    END
+    METADATA
+        "title" "MIRIP_vector"
+        "wfs_title"         "MIRIP_vector" ##REQUIRED
+        "wfs_srs"           "EPSG:900913" ## REQUIRED
+        "gml_include_items" "all" ## Optional (serves all attributes for layer)
+        "gml_featureid"     "db_id" ## REQUIRED
+        "wfs_enable_request" "*"
+		"wfs_getfeature_formatlist" "SHAPEZIP"
+    END
+
+    TYPE POLYGON
+    CLASS
+        NAME "MIRIP_vector"
+        STYLE
+            color 100 250 250
+            outlinecolor 50 50 250
+        END
+    END 
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    dump true
+END #end of layer
+
+
+
+END # end of map file

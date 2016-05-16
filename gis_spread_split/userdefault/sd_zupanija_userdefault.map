@@ -1,0 +1,2648 @@
+#
+# Start of map file
+#
+MAP
+NAME "zupanija"
+STATUS ON
+#SIZE 700 772
+#EXTENT 6582410 4750022 6698265 4898023
+#Za SD
+#EXTENT 1669649 5160862 2224662 5464915
+#Za holistic
+EXTENT 590000 3400000 3700000 6600000
+SIZE 700 700
+
+
+UNITS METERS
+IMAGECOLOR 225 225 225
+TRANSPARENT ON
+IMAGETYPE PNG
+CONFIG "CGI_CONTEXT_URL" "1"
+CONFIG "PROJ_LIB" "/usr/local/share/proj/"
+FONTSET "../.././fonts/fonts.list"
+PROJECTION
+  "init=epsg:900913"
+END
+  outputformat
+    name "image/png"
+    driver "GD/PNG"
+    imagemode "rgba"
+    extension "png"
+    mimetype "image/png"
+    imagemode RGBA
+    TRANSPARENT ON
+    FORMATOPTION "INTERLACE=OFF"
+  end
+
+
+
+#
+# Start of web interface definition
+#
+WEB
+TEMPLATE /var/www/gis/map.html
+IMAGEPATH /var/www/gis_data/mapserver/temp/
+IMAGEURL "/gis_data/mapserver/temp/"
+LOG /var/www/gis/maplog
+    METADATA
+      WMS_TITLE "Test WMS"
+      WMS_ABSTRACT "Testna verzija WMS-a"
+	  "wms_enable_request" "*"
+      WMS_ONLINERESOURCE "http://192.168.0.30/cgi-bin/mapserv?map=/var/www/gis/webgiszupanija.map&FORMAT=image%2Fpng&"
+      WMS_SRS "epsg:4326 epsg:2805 epsg:24600 epsg:54004 epsg:900913 epsg:3765 epsg:4258 epsg:3035 epsg:3857" 
+      #"wms_srs" "epsg:4326 epsg:32767 epsg:900913" 
+    END
+
+END
+
+#
+# Start of reference map
+#
+REFERENCE
+IMAGE "ref1.png"
+EXTENT 6582819 4718053 6722262 4890293
+STATUS ON
+COLOR -1 -1 -1
+OUTLINECOLOR 255 0 0
+SIZE 95 95
+END
+
+#
+# Start of legend
+#
+LEGEND
+KEYSIZE 18 12
+LABEL
+TYPE BITMAP
+SIZE MEDIUM
+COLOR 0 0 89
+END
+STATUS ON
+END
+
+#
+# Start of scalebar
+#
+SCALEBAR
+IMAGECOLOR 255 255 255
+LABEL
+COLOR 0 0 0
+SIZE SMALL
+END
+SIZE 350 5
+COLOR 255 255 255
+BACKGROUNDCOLOR 0 0 0
+OUTLINECOLOR 0 0 0
+UNITS kilometers
+INTERVALS 5
+STATUS ON
+END
+
+LAYER
+  NAME "MIRIP"
+  TYPE RASTER
+  OFFSITE  255 255 255
+STATUS OFF
+PROJECTION
+  "init=epsg:900913"
+END
+METADATA
+	WMS_TITLE "MIRIP"
+	WMS_ABSTRACT "MIRIP"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:900913"
+END
+TRANSPARENCY  100 
+  DATA "/home/holistic/webapp/gis_data_holistic/MIRIP.tif"
+END
+
+LAYER
+  NAME "EruptiveFireRisk"
+  TYPE RASTER
+  OFFSITE  255 255 255
+STATUS OFF
+PROJECTION
+  "init=epsg:900913"
+END
+METADATA
+	WMS_TITLE "EruptiveFireRisk"
+	WMS_ABSTRACT "EruptiveFireRisk"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:900913"
+END
+TRANSPARENCY  100 
+  DATA "/home/holistic/meteoArhiva/current/eruptive_risk.tif"
+END
+
+LAYER
+  NAME "reljef"
+  TYPE RASTER
+STATUS OFF
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+METADATA
+	WMS_TITLE "reljef"
+	WMS_ABSTRACT "Istra - reljef"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+TRANSPARENCY  100 
+  DATA "/home/holistic/webapp/gis_data_split/reljef.tif"
+END
+
+LAYER
+  NAME "Aspect"
+  TYPE RASTER
+STATUS OFF
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+METADATA
+	WMS_TITLE "Aspect"
+	WMS_ABSTRACT "Istra - Aspect"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+TRANSPARENCY  100 
+  DATA "/home/holistic/webapp/gis_data_split/aspect.tif"
+END
+
+LAYER
+  NAME "Slope"
+  TYPE RASTER
+STATUS OFF
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+METADATA
+	WMS_TITLE "Aspect"
+	WMS_ABSTRACT "Istra - Slope"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+TRANSPARENCY  100 
+  DATA "/home/holistic/webapp/gis_data_split/slope.tif"
+END
+
+ #Spread_raster
+LAYER
+  NAME "Pozar"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_spread_split/user_files/KORISNIK/raster/spread_rast.tif
+END
+
+ #regionTemp
+LAYER
+  NAME "regionTemp"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_spread_split/user_files/KORISNIK/raster/region_temp_for_current.tif
+END
+
+ #mois_liveTemp
+LAYER
+  NAME "mois_liveTemp"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/meteoArhiva/current/mois_live.tif
+END
+
+
+ #mois_live_customTemp
+LAYER
+  NAME "mois_live_customTemp"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_spread_split/user_files/KORISNIK/raster/mois_live.tif
+END
+
+
+#FESB CALCULATED FWI;ISI; BUI;....
+ #FWI_fesb
+LAYER
+  NAME "FWI_fesb"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  100
+  DATA /home/holistic/meteoArhiva/current/FWI_fesb.tif
+END
+
+ #FFMC_fesb
+LAYER
+  NAME "FFMC_fesb"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  100
+  DATA /home/holistic/meteoArhiva/current/FFMC_fesb.tif
+END
+
+ #DMC_fesb
+LAYER
+  NAME "DMC_fesb"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  100
+  DATA /home/holistic/meteoArhiva/current/DMC_fesb.tif
+END
+
+ #DC_fesb
+LAYER
+  NAME "DC_fesb"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  100
+  DATA /home/holistic/meteoArhiva/current/DC_fesb.tif
+END
+
+ #ISI_fesb
+LAYER
+  NAME "ISI_fesb"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  100
+  DATA /home/holistic/meteoArhiva/current/ISI_fesb.tif
+END
+
+ #BUI_fesb
+LAYER
+  NAME "BUI_fesb"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  100
+  DATA /home/holistic/meteoArhiva/current/BUI_fesb.tif
+END
+
+
+
+
+ #FWI
+LAYER
+  NAME "FWITemp"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/meteoArhiva/current/FWI/FWI.tif
+END
+
+ #DalekovodiMIRIP
+LAYER
+  NAME "DalekovodiTemp"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_data_holistic/DalekovodiMIRIP.tif
+END
+
+ #ObjektiMIRIP
+LAYER
+  NAME "ObjektiTEMP"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_data_holistic/ObjektiMIRIP.tif
+END
+
+ #CesteMIRIP
+LAYER
+  NAME "CesteTEMP"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_data_holistic/CesteMIRIP.tif
+END
+
+ #Padaline
+LAYER
+  NAME "Padaline"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_data_holistic/prec.tif
+END
+
+ #precModified
+LAYER
+  NAME "precModified"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_data_holistic/precModified.tif
+END
+
+
+
+
+ #windAspect
+LAYER
+  NAME "windAspect"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_data_holistic/windAspect.tif
+END
+
+
+ #windSlope
+LAYER
+  NAME "windSlope"
+  TYPE RASTER
+  OFFSITE  255 255 0
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_data_holistic/windSlope.tif
+END
+
+
+#Layer - Spread_vector#
+LAYER
+NAME "Pozar_vector"
+TYPE LINE
+STATUS ON
+  DATA /home/holistic/webapp/gis_spread_split/user_files/KORISNIK/vector/spread_shape.shp
+CLASS
+COLOR 0 0 0
+NAME "My layer legend"
+END # end of class
+END # end of layer Spread_vector#
+
+LAYER
+NAME "Ceste"
+TYPE LINE
+STATUS OFF
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+METADATA
+	WMS_TITLE "Ceste"
+	WMS_ABSTRACT "Ceste"
+	WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+  DATA "/var/www/gis_data_temp_istra/ceste.shp"
+
+CLASS
+COLOR 0 0 0
+NAME "My layer legend"
+END # end of class
+END # end of layer Spread_vector#
+
+LAYER
+NAME "Spread_vector"
+TYPE LINE
+STATUS OFF
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+METADATA
+	WMS_TITLE "spread_vector"
+	WMS_ABSTRACT "Splitsko dalmatinska zupanija - reljef"
+	WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+  DATA /var/www/gis_spread/split_spread/user_files/KORISNIK/vector/spread_shape.shp
+
+CLASS
+COLOR 0 0 0
+NAME "My layer legend"
+END # end of class
+END # end of layer Spread_vector#
+
+
+LAYER
+  NAME "Spread_raster"
+  TYPE RASTER
+  OFFSITE  255 255 0
+  TRANSPARENCY  65
+STATUS OFF
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+METADATA
+	WMS_TITLE "spread_raster"
+	WMS_ABSTRACT "Spread raster"
+	WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+  DATA /var/www/gis_spread/split_spread/user_files/KORISNIK/raster/spread_rast.tif
+
+END # end of layer Spread_raster#
+
+LAYER
+NAME "wind"
+STATUS ON
+TRANSPARENCY 0
+TYPE POINT
+FEATURE
+POINTS
+     #   6622410 4800022
+      #  6632410 4810022
+
+      6614291.30614 4800033.72806 
+      6669872.60106 4857817.88121
+
+END
+TEXT "2"
+
+END 
+PROJECTION
+  "proj=tmerc"
+  "ellps=WGS84"
+  "units=m"
+  "lon_0=15"
+  "k=0.9999"
+  "x_0=6500000"
+  "y_0=0"
+  "no_defs"
+END
+
+METADATA
+	WMS_TITLE "wind"
+	WMS_ABSTRACT "wind"
+	WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+CLASS
+	NAME "Vjetar"
+    STYLE
+      #COLOR 255 0 0
+      ANTIALIAS TRUE
+    END 
+	LABEL
+		TYPE truetype
+		FONT "wind_arrows"
+		SIZE 23
+		COLOR 0 0 0
+		ANTIALIAS false
+		#BACKGROUNDCOLOR 255 255 255
+		#BACKGROUNDSHADOWCOLOR 0 0 0
+		#BACKGROUNDSHADOWSIZE 3 3
+		#BUFFER 3
+		ANGLE 0
+		SIZE 23
+		BUFFER 4
+		PARTIALS false
+		#OUTLINECOLOR 0 0 0
+		#SHADOWCOLOR 0 0 0
+		#SHADOWSIZE 3 3
+	END
+END
+
+END # end of layer Wind#
+
+#Kozjak2010realrast
+LAYER
+  NAME "Kozjak2010realrast"
+  TYPE RASTER
+STATUS OFF
+TRANSPARENCY  80
+  DATA /home/holistic/webapp/gis_data_split/kozjak2010/kozjak2010.tif
+END
+
+
+#Kozjak2010realvect
+LAYER
+NAME "Kozjak2010realvect"
+TYPE LINE
+STATUS ON
+  DATA /home/holistic/webapp/gis_data_split/kozjak2010/kozjak2010.shp
+CLASS
+COLOR 0 0 0
+NAME "My layer legend"
+END # end of class
+END # end of layer Spread_vector#
+
+
+
+
+
+#######################################
+#######################################
+
+
+#
+# Start of query definitions
+#
+QUERYMAP
+STATUS ON
+STYLE HILITE
+END
+
+LAYER
+  NAME corine_shape
+  TYPE polygon
+  DATA /home/holistic/webapp/gis_data_holistic/clc_sve
+  TRANSPARENCY  50 
+ STATUS OFF
+ PROJECTION
+  "init=epsg:900913"
+END
+METADATA
+	WMS_TITLE "corine_shape"
+	WMS_ABSTRACT "corine"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+
+ LABELITEM "kod"
+    CLASS
+    	EXPRESSION ([kod] >= 520)
+      COLOR 000 135 238  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+     CLASS
+    	EXPRESSION (([kod] >= 400) AND ([kod] < 520) )
+      COLOR 165 214 210    
+	OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+      END
+     CLASS
+    	EXPRESSION (([kod] >= 400) AND ([kod] < 500) )
+      COLOR 157 170 212    
+	OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+      END
+ 
+    CLASS
+    	EXPRESSION (([kod] > 334) AND ([kod] <= 335) )
+      COLOR 174 215 197     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END   
+    END
+     CLASS
+    	EXPRESSION (([kod] > 333) AND ([kod] <= 334) )
+      COLOR 019 020 022     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END   
+    END
+     CLASS
+    	EXPRESSION (([kod] > 332) AND ([kod] <= 333) )
+      COLOR 212 233 200     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END   
+    END
+     CLASS
+    	EXPRESSION (([kod] >= 325) AND ([kod] <= 332) )
+      COLOR 110 0 110     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END   
+    END
+   CLASS
+    	EXPRESSION (([kod] > 324) AND ([kod] <= 331) )
+      COLOR 230 230 232     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END  
+     END
+      CLASS
+    	EXPRESSION (([kod] > 323) AND ([kod] <= 324) )
+      COLOR 160 208 070     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END  
+     END
+     CLASS
+    	EXPRESSION (([kod] > 322) AND ([kod] <= 323) )
+      COLOR 163 210 088     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END  
+     END
+     
+      CLASS
+    	EXPRESSION (([kod] > 321) AND ([kod] <= 322) )
+      COLOR 163 212 130     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END  
+     END
+     CLASS
+    	EXPRESSION (([kod] > 313) AND ([kod] <= 321) )
+      COLOR 197 223 088     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END  
+     END
+    CLASS
+    	EXPRESSION (([kod] > 312) AND ([kod] <= 313) )
+      COLOR 100 187 072     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END  
+     END
+      CLASS
+    	EXPRESSION (([kod] > 311) AND ([kod] <= 312) )
+      COLOR 057 164 060     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END  
+     END
+     CLASS
+    	EXPRESSION (([kod] >= 300) AND ([kod] <= 311) )
+      COLOR 128 196 073     
+       OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END  
+     END
+    
+    CLASS
+    	EXPRESSION (([kod] > 242) AND ([kod] <= 243) )
+      COLOR 227 202 075     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END    
+    END
+    CLASS
+    	EXPRESSION (([kod] > 241) AND ([kod] <= 242) )
+      COLOR 245 218 077     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END    
+    END
+   CLASS
+    	EXPRESSION (([kod] >= 231) AND ([kod] < 241) )
+      COLOR 225 223 076     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END    
+    END
+    CLASS
+    	EXPRESSION (([kod] > 132) AND ([kod] <= 133) )
+      COLOR 192 126 174     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+    END
+    CLASS
+    	EXPRESSION (([kod] > 131) AND ([kod] <= 132) )
+      COLOR 168 081 038     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+    END
+    CLASS
+    	EXPRESSION (([kod] > 124) AND ([kod] <= 131) )
+      COLOR 133 082 149     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+    END
+    CLASS
+    	EXPRESSION (([kod] > 123) AND ([kod] <= 124) )
+      COLOR 219 203 216     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+    END
+    CLASS
+    	EXPRESSION (([kod] > 122) AND ([kod] <= 123) )
+      COLOR 225 203 205     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+    END
+    CLASS
+    	EXPRESSION (([kod] > 121) AND ([kod] <= 122) )
+      COLOR 197 044 038     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+    END
+     CLASS
+    	EXPRESSION (([kod] > 112) AND ([kod] <= 121) )
+      COLOR 159 116 170     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+    END
+   
+      CLASS
+    	EXPRESSION (([kod] > 111) AND ([kod] <= 112) )
+      COLOR 221 056 050     
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+    END
+   
+    CLASS
+    	EXPRESSION (([kod] > 100) AND ([kod] <= 111) )
+      COLOR 221 056 050     
+      OUTLINECOLOR 216 047 080   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255 
+			END
+    END
+   
+END
+
+
+LAYER
+  NAME modelAlbini
+  TYPE polygon
+  DATA PUTANJAALBINI
+  TRANSPARENCY  50 
+ STATUS OFF
+ PROJECTION
+  "init=epsg:900913"
+END
+METADATA
+	WMS_TITLE "modelAlbini"
+	WMS_ABSTRACT "modelAlbini"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+
+ LABELITEM "value"
+    CLASS
+    	EXPRESSION ([value] == 0)
+      COLOR 255 0 0
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 1)
+      COLOR 235 20 0
+	  TEXT '21'
+      OUTLINECOLOR 255 255 255     
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 2)
+      COLOR 216 39 0
+	  TEXT '22'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 3)
+      COLOR 196 59 0
+	  TEXT '23'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 4)
+      COLOR 177 78 0
+	  TEXT '24'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 5)
+      COLOR 157 98 0
+	  TEXT '25'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 6)
+      COLOR 137 118 0
+	  TEXT '26'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 7)
+      COLOR 118 137 0
+	  TEXT '27'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 8)
+      COLOR 98 157 0
+	  TEXT '28'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 9)
+      COLOR 78 177 0
+	  TEXT '29'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 10)
+      COLOR 59 196 0
+	  TEXT '30'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 11)
+      COLOR 39 216 0
+	  TEXT '31'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 12)
+      COLOR 20 235 0
+	  TEXT '32'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 13)
+      COLOR 0 255 0
+	  TEXT '33'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+END
+
+
+
+
+
+
+
+
+
+LAYER
+  NAME modelAlbiniDefault
+  TYPE polygon
+  DATA /home/holistic/webapp/gis_data_holistic/modelAlbini
+  TRANSPARENCY  50 
+ STATUS OFF
+ PROJECTION
+  "init=epsg:900913"
+END
+METADATA
+	WMS_TITLE "modelAlbiniDefault"
+	WMS_ABSTRACT "modelAlbiniDefault"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+
+
+ LABELITEM "value"
+    CLASS
+    	EXPRESSION ([value] == 0)
+      COLOR 255 0 0  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 1)
+      COLOR 235 20 0   
+      OUTLINECOLOR 255 255 255     
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 2)
+      COLOR 216 39 0   
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 3)
+      COLOR 196 59 0  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 4)
+      COLOR 177 78 0   
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 5)
+      COLOR 157 98 0  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 6)
+      COLOR 137 118 0   
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 7)
+      COLOR 118 137 0   
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 8)
+      COLOR 98 157 0   
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 9)
+      COLOR 78 177 0 
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 10)
+      COLOR 59 196 0  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 11)
+      COLOR 39 216 0   
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 12)
+      COLOR 20 235 0   
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 13)
+      COLOR 0 255 0   
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+END
+
+
+
+
+
+
+
+
+
+
+LAYER
+  NAME modelScott
+  TYPE polygon
+  DATA PUTANJASCOTT
+  TRANSPARENCY  50 
+ STATUS OFF
+ PROJECTION
+  "init=epsg:900913"
+END
+METADATA
+	WMS_TITLE "modelScott"
+	WMS_ABSTRACT "modelScott"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+
+ LABELITEM "value"
+    CLASS
+    	EXPRESSION ([value] == 0)
+      COLOR 000 135 238  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 1)
+      COLOR 255 0 0
+	  TEXT '41'
+      OUTLINECOLOR 255 255 255      
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 2)
+      COLOR 249 6 0
+	  TEXT '42'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 3)
+      COLOR 242 13 0
+	  TEXT '43'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 4)
+      COLOR 236 19 0
+	  TEXT '44'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 5)
+      COLOR 230 26 0
+	  TEXT '45'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 6)
+      COLOR 223 32 0
+	  TEXT '46'
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 7)
+      COLOR 217 38 0
+	  TEXT '47'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 8)
+      COLOR 210 45 0
+	  TEXT '48'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 9)
+      COLOR 204 51 0
+	  TEXT '49'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 10)
+      COLOR 198 57 0
+	  TEXT '50'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 11)
+      COLOR 191 64 0
+	  TEXT '51'	  	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 12)
+      COLOR 185 70 0
+	  TEXT '52'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 13)
+      COLOR 179 77 0
+	  TEXT '53'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 14)
+      COLOR 172 83 0
+	  TEXT '54'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 15)
+      COLOR 166 89 0
+	  TEXT '55'	  
+      OUTLINECOLOR 255 255 255     
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 16)
+      COLOR 159 96 0
+	  TEXT '56'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 17)
+      COLOR 153 102 0
+	  TEXT '57'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 18)
+      COLOR 147 108 0
+	  TEXT '58'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 19)
+      COLOR 140 115 0
+	  TEXT '59'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 20)
+      COLOR 134 121 0
+	  TEXT '60'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 21)
+      COLOR 128 128 0
+	  TEXT '61'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 22)
+      COLOR 121 134 0
+	  TEXT '62'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 23)
+      COLOR 115 140 0
+	  TEXT '63'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 24)
+      COLOR 108 147 0
+	  TEXT '64'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 25)
+      COLOR 102 153 0
+	  TEXT '65'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 26)
+      COLOR 96 159 0
+	  TEXT '66'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 27)
+      COLOR 89 166 0
+	  TEXT '67'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 28)
+      COLOR 83 172 0
+	  TEXT '68'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 29)
+      COLOR 77 179 0
+	  TEXT '69'	  
+      OUTLINECOLOR 255 255 255     
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 30)
+      COLOR 70 185 0
+	  TEXT '70'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 31)
+      COLOR 64 191 0
+	  TEXT '71'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 32)
+      COLOR 57 198 0
+	  TEXT '72'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 33)
+      COLOR 51 204 0
+	  TEXT '73'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 34)
+      COLOR 45 210 0
+	  TEXT '74'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 35)
+      COLOR 38 217 0
+	  TEXT '75'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 36)
+      COLOR 32 223 0
+	  TEXT '76'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 37)
+      COLOR 26 230 0
+	  TEXT '77'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 38)
+      COLOR 19 236 0
+	  TEXT '78'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 39)
+      COLOR 13 242 0
+	  TEXT '79'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 40)
+      COLOR 6 249 0
+	  TEXT '80'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+
+END
+
+
+
+
+
+LAYER
+  NAME modelScottDefault
+  TYPE polygon
+  DATA /home/holistic/webapp/gis_data_holistic/modelScott
+  TRANSPARENCY  50 
+ STATUS OFF
+ PROJECTION
+  "init=epsg:900913"
+END
+METADATA
+	WMS_TITLE "modelScottDefault"
+	WMS_ABSTRACT "modelScottDefault"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+
+ LABELITEM "value"
+    CLASS
+    	EXPRESSION ([value] == 0)
+      COLOR 000 135 238  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 1)
+      COLOR 255 0 0
+	  TEXT '101'
+      OUTLINECOLOR 255 255 255      
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 2)
+      COLOR 249 6 0
+	  TEXT '102'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 3)
+      COLOR 242 13 0
+	  TEXT '103'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 4)
+      COLOR 236 19 0
+	  TEXT '104'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 5)
+      COLOR 230 26 0
+	  TEXT '105'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 6)
+      COLOR 223 32 0
+	  TEXT '106'
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 7)
+      COLOR 217 38 0
+	  TEXT '107'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 8)
+      COLOR 210 45 0
+	  TEXT '108'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 9)
+      COLOR 204 51 0
+	  TEXT '109'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 10)
+      COLOR 198 57 0
+	  TEXT '121'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 11)
+      COLOR 191 64 0
+	  TEXT '122'	  	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 12)
+      COLOR 185 70 0
+	  TEXT '123'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 13)
+      COLOR 179 77 0
+	  TEXT '124'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 14)
+      COLOR 172 83 0
+	  TEXT '141'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 15)
+      COLOR 166 89 0
+	  TEXT '142'	  
+      OUTLINECOLOR 255 255 255     
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 16)
+      COLOR 159 96 0
+	  TEXT '143'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 17)
+      COLOR 153 102 0
+	  TEXT '144'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 18)
+      COLOR 147 108 0
+	  TEXT '145'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 19)
+      COLOR 140 115 0
+	  TEXT '146'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 20)
+      COLOR 134 121 0
+	  TEXT '147'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 21)
+      COLOR 128 128 0
+	  TEXT '148'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 22)
+      COLOR 121 134 0
+	  TEXT '149'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 23)
+      COLOR 115 140 0
+	  TEXT '161'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 24)
+      COLOR 108 147 0
+	  TEXT '162'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 25)
+      COLOR 102 153 0
+	  TEXT '163'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 26)
+      COLOR 96 159 0
+	  TEXT '164'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 27)
+      COLOR 89 166 0
+	  TEXT '165'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 28)
+      COLOR 83 172 0
+	  TEXT '181'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 29)
+      COLOR 77 179 0
+	  TEXT '182'	  
+      OUTLINECOLOR 255 255 255     
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 30)
+      COLOR 70 185 0
+	  TEXT '183'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 31)
+      COLOR 64 191 0
+	  TEXT '184'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 32)
+      COLOR 57 198 0
+	  TEXT '185'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 33)
+      COLOR 51 204 0
+	  TEXT '186'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 34)
+      COLOR 45 210 0
+	  TEXT '187'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 35)
+      COLOR 38 217 0
+	  TEXT '188'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 36)
+      COLOR 32 223 0
+	  TEXT '189'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 37)
+      COLOR 26 230 0
+	  TEXT '201'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 38)
+      COLOR 19 236 0
+	  TEXT '202'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 39)
+      COLOR 13 242 0
+	  TEXT '203'	  
+      OUTLINECOLOR 255 255 255    
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+	CLASS
+    	EXPRESSION ([value] == 40)
+      COLOR 6 249 0
+	  TEXT '204'	  
+      OUTLINECOLOR 255 255 255   
+      LABEL
+			TYPE TRUETYPE
+			FONT arial
+			ENCODING ISO-8859-2
+			SIZE 10
+			POSITION CC
+			COLOR 255 255 255
+			END  
+    END
+
+END
+
+LAYER
+  NAME MIRIPvector
+  TYPE polygon
+  DATA "/home/holistic/webapp/gis_data_holistic/MIRIP_vector.shp"
+  TRANSPARENCY  50 
+ STATUS OFF
+ PROJECTION
+  "init=epsg:900913"
+END
+METADATA
+	WMS_TITLE "MIRIPvector"
+	WMS_ABSTRACT "MIRIPvector"
+	#WMS_FORCE_SEPARATE_REQUEST "1"
+	WMS_SRS "epsg:32767"
+END
+
+ LABELITEM "value"
+    CLASS
+    	EXPRESSION ([value] == 0)
+      COLOR 255 255 255
+      OUTLINECOLOR 255 255 255   
+    END
+	CLASS
+    	EXPRESSION ([value] == 1)
+      COLOR 50 150 225  
+      OUTLINECOLOR 255 255 255     
+    END
+	CLASS
+    	EXPRESSION ([value] == 2)
+      COLOR 100 185 0   
+      OUTLINECOLOR 255 255 255    
+    END
+	CLASS
+    	EXPRESSION ([value] == 3)
+      COLOR 255 190 55  
+      OUTLINECOLOR 255 255 255    
+    END
+	CLASS
+    	EXPRESSION ([value] == 4)
+      COLOR 255 130 35 
+      OUTLINECOLOR 255 255 255   
+    END
+	CLASS
+    	EXPRESSION ([value] == 5)
+      COLOR 235 60 45  
+      OUTLINECOLOR 255 255 255      
+    END
+END
+
+
+
+END
+
+

@@ -1,0 +1,5 @@
+#CRONTAB file automatically generated using gis_functions
+	
+29 * * * * php "/home/holistic/webapp/gis_spread_split/MIRIP/checkPaneIsWorking.php"
+
+

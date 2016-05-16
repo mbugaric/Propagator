@@ -1,0 +1,2 @@
+export GRASS_BATCH_JOB=WEBDIRSPREAD/user_files/KORISNIK/calculate_spread_launch.sh
+GRASSEXECUTABLE -text GRASSLOCATION/KORISNIK

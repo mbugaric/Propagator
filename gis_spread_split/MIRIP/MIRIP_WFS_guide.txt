@@ -1,0 +1,16 @@
+http://80.80.59.51/cgi-bin/mapserv?map=/home/holistic/webapp/gis_spread_split/MIRIP/MIRIP_WFS.map&SERVICE=WFS&VERSION=1.1.0&LAYERS=MIRIP_vector&REQUEST=GetFeature&TYPENAME=MIRIP_vector
+
+GetCapabilities
+http://80.80.59.51/cgi-bin/mapserv?map=/home/holistic/webapp/gis_spread_split/MIRIP/MIRIP_WFS.map&SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities
+
+
+Final:
+http://80.80.59.51/cgi-bin/mapserv?map=/home/holistic/webapp/gis_spread_split/MIRIP/MIRIP_WFS.map&SERVICE=WFS&VERSION=1.1.0&LAYERS=MIRIP_vector&REQUEST=GetFeature&TYPENAME=MIRIP_vector&OUTPUTFORMAT=SHAPEZIP
+
+
+Hrvoje Grancariæ <grancaric@zadarska-zupanija.hr>,
+Stipanicev prof <dstip@fesb.hr>,
+Marin Bugaric <marin.bugaric@gmail.com>,
+Dalibor Kušiæ <Dalibor.Kusic@in2.hr>,
+Hrvoje Matijeviæ <Hrvoje.Matijevic@igea.hr>,
+Marko Škvorc <Marko.Skvorc@igea.hr>

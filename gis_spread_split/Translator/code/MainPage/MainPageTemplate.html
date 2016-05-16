@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AdriaFirePropagator-Translator</title>
+<link rel="shortcut icon" href="../gif/favicon.ico" type="image/x-icon">
+<script type="text/javascript" src="scripts/kamis/ajax/Ajax.js"></script>
+<script type="text/javascript" src="scripts/kamis/UrlHelper.js"></script>
+<script type="text/javascript" src="scripts/kamis/EventHelper.js"></script>
+<script type="text/javascript" src="scripts/kamis/DomHelper.js"></script>
+<script type="text/javascript" src="scripts/kamis/ValueTypeHelper.js"></script>
+<script type="text/javascript" src="scripts/kamis/Timer.js"></script>
+<script type="text/javascript" src="scripts/handlers.js"></script>
+
+<link href="styles/page.css" rel="stylesheet" type="text/css" />
+<link href="styles/languageLink.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="page">
+<div class="translatorHelp" style="display:none" id="help1"><?echo _NASLOV_AKTIVIRANJE_UPRAVLJANJA_PREKO_MAPE?> <?echo _NASLOV_KLIKOM_NA_KARTU ?></div>
+<table id="main" cellpadding="0px" cellspacing="0px" align="center">
+	<thead id="mainHeader" valign="top">
+		<tr>
+			<td>
+			<table id="headerContentPlacer" cellpadding="0px" cellspacing="0px">
+				<tr valign="top">
+					<td id="titleContainer"><label id="title">{TITLE}</label> - </td>
+					<td align="right">
+						<table id="languageLinksContainer" cellpadding="0px" cellspacing="0px">
+							<tr>
+								<td><a id="{LINK_CRO_ID}" href="{LINK_CRO}"></a></td>
+								<td><a id="{LINK_ENG_ID}" href="{LINK_ENG}"></a></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			</td>
+		</tr>
+	</thead>
+	<tbody id="mainContent" valign="top">
+		<tr>
+			<td>
+				<div>
+					<form id="SelectorForm" method="get">
+						<table>
+							<tr>
+								<td>
+								<table>
+									<tr>
+										<td><label>{SELECT_SOURCE_LANGUAGE_CAPTION}</label></td>
+										<td><select id="sourceLanguage" name="sourceLanguage">
+											<!-- START_REPEATER_SOURCE_LANGUAGE_ITEM -->
+											<option value="{VALUE}"{SELECTED}>{VALUE}</option>
+											<!-- END_REPEATER_SOURCE_LANGUAGE_ITEM -->
+										</select></td>
+									</tr>
+								</table>
+								</td>
+								<td>
+								<table>
+									<tr>
+										<td><label>{SELECT_DESTINATION_LANGUAGE_CAPTION}</label></td>
+										<td><select id="destinationLanguage"
+											name="destinationLanguage">
+											<!-- START_REPEATER_DESTINATION_LANGUAGE_ITEM -->
+											<option value="{VALUE}" {SELECTED}>{VALUE}</option>
+											<!-- END_REPEATER_DESTINATION_LANGUAGE_ITEM -->
+										</select></td>
+									</tr>
+								</table>
+								</td>
+								<td>
+								<table>
+									<tr>
+										<td><label>{SELECT_PAGE_SIZE_CAPTION}</label></td>
+										<td><select id="pageSize" name="pageSize">
+											<!-- START_REPEATER_PAGE_SIZE_ITEM -->
+											<option value="{VALUE}"{SELECTED}>{VALUE}</option>
+											<!-- END_REPEATER_PAGE_SIZE_ITEM -->
+										</select></td>
+									</tr>
+								</table>
+								</td>
+								<td>
+								<noscript>
+								<table>
+									<tr>
+										<td>
+											<input id="buttonSubmit" type="submit" value="{BUTTON_SAVE_CAPTION}" />
+										</td>
+									</tr>
+								</table>
+								</noscript>
+								</td>
+								<td>
+								</td>
+								<td><input type="hidden" id="pageNumber" name="pageNumber"
+									value="{CURRENT_PAGE_NUMBER}" /> <input type="hidden"
+									id="uiLanguage" name="uiLanguage" value="{CURRENT_UI_LANGUAGE}" />
+								</td>
+								<td align="right">
+									<label id="statusLabel"></label>
+								</td>
+							</tr>
+						</table>
+					</form>
+					<table cellspacing="0px" cellpadding="0px">
+						<tr>
+							<td>
+								<div id="translationCollectionContainer">{TRANSLATION_ITEM_CONTENT}</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+	<tfoot id="mainFooter" valign="top">
+		<tr>
+			<td>
+				<div>&nbsp;&nbsp;</div>
+			</td>
+		</tr>
+	</tfoot>
+	<tr><td align="center"><div class="instructions"><b>Instructions:</b> You can customize all titles and inscriptions from English (ENG) to: Croatian (HRV), Italian (ITA), Slovenian (SLV), Greek (ELL), Albanian (SQI) and Montenegrin (SRP) cooded according to ISO 639-2 code. On the left side are English titles and inscriptions (that could not be changed) and on the right side are translations. Procedure is as follows: <b>(a) Select the destination language. (b) Translate and fill boxes on the right side. (c) Click button ‘Save’ (located bottom – right) to save your translation.</b> Character set is quite important. We suggest standard UTF-8 that covers almost all EU characters.</div>&nbsp;
+	</td></tr>
+		<tr>
+			<td>
+			<table width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><img src="../gif/holistic_logo.png" bodrer="0" height="80"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td ><br><img src="../gif/EU_flag.png" border="0" height="50"> &nbsp;&nbsp;</td>
+					<td>This project was partly financed by the European Union.<br />The content of this website does not reflect the official opinion of the European Union.</td>
+					<td valign="top">&nbsp;&nbsp;&nbsp;<img src="../gif/ipa_logo.png" bodrer="0" height="80"></td>
+				</tr>
+			</table>
+			</td>
+		</tr>
+</table>
+
+</body>
+</html>

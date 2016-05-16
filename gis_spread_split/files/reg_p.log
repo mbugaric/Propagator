@@ -1,0 +1,12 @@
+projection: 99 (Unknown projection)
+zone:       0
+datum:      ** unknown (default: WGS84) **
+ellipsoid:  a=6378137 es=0.006694385
+north:      4816947.41833
+south:      4776947.41833
+west:       6609062.27833
+east:       6649062.27833
+nsres:      5
+ewres:      5
+rows:       8000
+cols:       8000

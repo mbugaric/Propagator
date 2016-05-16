@@ -1,0 +1,62 @@
+#Pripaziti na foldere
+# Dohvacanje podataka sa DHMZ
+00 0 * * * chmod 750 /home/holistic/meteoArhiva/dhmz_http_get
+00 0 * * * chmod 750 /home/holistic/vjetarWMS/launch.sh
+
+00 2,5 * * *  /home/holistic/meteoArhiva/dhmz_http_get -o fesb.wind.12
+00 2,5 * * *  /home/holistic/meteoArhiva/dhmz_http_get -o fesb.prec.12
+00 2,5 * * *  /home/holistic/meteoArhiva/dhmz_http_get -o fesb.TRH2m.12
+01 2,5 * * *  php /home/holistic/meteoArhiva/meteo2asc.php fesb.wind.12
+01 2,5 * * *  php /home/holistic/meteoArhiva/meteoPrec2asc.php fesb.prec.12
+01 2,5 * * *  php /home/holistic/meteoArhiva/meteoTRH2m2asc.php fesb.TRH2m.12
+
+00 8,11,14,17 * * *  /home/holistic/meteoArhiva/dhmz_http_get -o fesb.wind.00
+00 8,11,14,17 * * *  /home/holistic/meteoArhiva/dhmz_http_get -o fesb.prec.00
+00 8,11,14,17 * * *  /home/holistic/meteoArhiva/dhmz_http_get -o fesb.TRH2m.00
+01 8,11,14,17 * * *  php /home/holistic/meteoArhiva/meteo2asc.php fesb.wind.00
+01 8,11,14,17 * * *  php /home/holistic/meteoArhiva/meteoPrec2asc.php fesb.prec.00
+01 8,11,14,17 * * *  php /home/holistic/meteoArhiva/meteoTRH2m2asc.php fesb.TRH2m.00
+
+00 20,23 * * *  /home/holistic/meteoArhiva/dhmz_http_get -o fesb.wind.12
+00 20,23 * * *  /home/holistic/meteoArhiva/dhmz_http_get -o fesb.prec.12
+00 20,23 * * *  /home/holistic/meteoArhiva/dhmz_http_get -o fesb.TRH2m.12
+01 20,23 * * *  php /home/holistic/meteoArhiva/meteo2asc.php fesb.wind.12
+01 20,23 * * *  php /home/holistic/meteoArhiva/meteoPrec2asc.php fesb.prec.12
+01 20,23 * * *  php /home/holistic/meteoArhiva/meteoTRH2m2asc.php fesb.TRH2m.12
+
+00 16 * * *  /home/holistic/meteoArhiva/dhmz_http_get -a pozar.lis
+01 16 * * *  php /home/holistic/meteoArhiva/get_FWI.php
+01 16 * * *  php /home/holistic/meteoArhiva/get_mois_from_FFMC.php
+
+#Calculate mois_live
+02 2,5,8,11,14,17,20,23 * * * /home/holistic/webapp/gis_spread_split/files/calculate_mois_live_launch.sh
+
+#Calculate eruptive risk layer
+03 2,5,8,11,14,17,20,23 * * * /home/holistic/webapp/gis_spread_split/files/calculate_eruptive_risk_launch.sh
+
+#Calculate ROS za trenutni
+04 2,5,8,11,14,17,20,23 * * * /home/holistic/webapp/gis_spread_split/files/calculate_ros_launch.sh
+
+#00 22 * * *  sh /home/holistic/meteoArhiva/zipAndMail.sh
+
+#Upitno cemu sluzi ovo ispod
+#Za izracun trenutnog vjetra za SplitskoDalmatinsku zupaniju
+#00 * * * * su - holistic -c "/home/holistic/vjetarWMS/launch.sh"
+#30 * * * * su - holistic -c "/home/holistic/vjetarWMS/launch.sh"
+
+#Ovo ispod ne treba
+#Za splitSpread kopirat iz arhive trenutni vjetar
+#00 17 * * * cp /home/holistic/meteoArhiva/`date +%d.%m.%Y`/wind_dir.asc /var/www/gis_data_temp_split/meteo/files/wind_dir.asc
+#00 17 * * * cp /home/holistic/meteoArhiva/`date +%d.%m.%Y`/wind_speed.asc /var/www/gis_data_temp_split/meteo/files/wind_speed.asc
+
+
+
+#Generate MIRIP
+0 0 1 * * /usr/bin/foo su - holistic -c "/home/holistic/webapp/gis_spread_split/MIRIP/staticMIRIP_launch.sh"
+04 2,5,8,11,14,17,20,23 * * *  su - holistic -c "/home/holistic/webapp/gis_spread_split/MIRIP/dynamicMIRIP_launch.sh"
+
+#Generiranje XML file-a za panele
+#HR_Split_Marjan_1
+28 * * * * su - holistic -c "/home/holistic/webapp/gis_spread_split/MIRIP/generateXML_launch.sh"
+29 * * * * php "/home/holistic/webapp/gis_spread_split/MIRIP/generateXML.php" "/home/holistic/webapp/gis_spread_split/MIRIP/HR_Split_Marjan_1.txt" "/home/holistic/webapp/gis_spread_split/MIRIP/HR_Split_Marjan_1.xml"
+

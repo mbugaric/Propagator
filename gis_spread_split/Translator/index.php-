@@ -1,0 +1,6 @@
+<?php
+	require_once ("code/MainPage/MainPageView.php");
+	
+	$mainPageView = new MainPageView();
+	echo ($mainPageView->ShowAll());
+?>

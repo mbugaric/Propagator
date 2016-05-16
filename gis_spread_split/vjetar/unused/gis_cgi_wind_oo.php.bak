@@ -1,0 +1,1451 @@
+<?php
+ini_set("memory_limit","256M");
+/*ini_set('display_errors', 'On');
+error_reporting(E_ALL); 
+*/
+
+require("../postavke_dir_gis.php");
+
+$korisnik=$_GET['user_name'];
+
+
+$numtocaka=20;
+
+/*http://192.168.0.40/cgi-bin/mapserv?map=/var/www/gis_spread/vjetar/webgiszupanija.map&vjetar=trenutni&FORMAT=image/png&LAYERS=wind&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application/vnd.ogc.se_inimage&SRS=EPSG:900913&BBOX=1817255.8996016665,5405476.790478902,1856391.6580766665,5444612.548953902&WIDTH=256&HEIGHT=256*/
+class olWind
+{
+		private $Wind_dirAsc_temp;
+		private $Wind_speedAsc_temp;
+
+		public function windSettings($WebDir, $map, $korisnik)
+		{
+
+		if($_POST['wind_option']=="meteo" && $_FILES['wind_meteo_file']['name'] !="" )
+		{
+			$filename=$_FILES['wind_dir_asc_file']['name'];
+			$filename2=$_FILES['wind_speed_asc_file']['name'];
+			$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1);
+			$ext2 = substr($filename2, strpos($filename2,'.'), strlen($filename2)-1);
+
+				if($ext=="" || $ext==".txt" || $_FILES['wind_meteo_file']['type']=="text/plain" )
+			{
+				$uploaddir = $WebDir."/user_files/$korisnik/";
+				$uploadfile = $uploaddir . "wind_meteo";
+
+				if (!move_uploaded_file($_FILES['wind_meteo_file']['tmp_name'], $uploadfile)) 
+				{
+						echo "Nije uspješno izvršeno!\n";
+				}
+				else
+				{
+					$this->convertMeteoToAsc($WebDir, $uploadfile, $korisnik, 6);
+					copy($WebDir."/user_files/$korisnik/meteo/wind_dir_meteo_0.asc", $WebDir."/user_files/$korisnik/wind_dir.asc");
+					copy($WebDir."/user_files/$korisnik/meteo/wind_speed_meteo_0.asc", $WebDir."/user_files/$korisnik/wind_speed.asc");
+				}
+			}
+		}
+
+		//Ukoliko se ucitava iz asc file-a
+
+		if($_POST['wind_option']=="asc" && (($_FILES['wind_dir_asc_file']['name'])!="" || ($_FILES['wind_speed_asc_file']['name'])!=""))
+		{
+			$filename=$_FILES['wind_dir_asc_file']['name'];
+			$filename2=$_FILES['wind_speed_asc_file']['name'];
+			$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1);
+			$ext2 = substr($filename2, strpos($filename2,'.'), strlen($filename2)-1);
+
+			if($ext==".asc" || $ext==".txt" || $_FILES['wind_dir_asc_file']['type']=="text/plain" )
+			{
+				$uploaddir = $WebDir."/user_files/$korisnik/";
+				$uploadfile = $uploaddir . "wind_dir.asc";
+
+				if (!move_uploaded_file($_FILES['wind_dir_asc_file']['tmp_name'], $uploadfile)) 
+				{
+						echo "Nije uspješno izvršeno!\n";
+				}
+			}
+
+			if( $ext2==".asc" || $ext2==".txt" || $_FILES['wind_speed_asc_file']['type']=="text/plain")
+			{
+
+				$uploaddir2 = $WebDir."/user_files/$korisnik/";
+				$uploadfile2 = $uploaddir2 . "wind_speed.asc";
+				//echo "<br>".$uploadfile;		
+
+				if (!move_uploaded_file($_FILES['wind_speed_asc_file']['tmp_name'], $uploadfile2)) 
+				{
+						echo "Nije uspješno izvršeno!\n";
+				}
+			}
+		}
+
+
+		//Ukoliko se unose vrijednosti
+
+
+		if($_POST['wind_option']=="single_value")
+		{
+
+			if($_POST["smjer"]==NULL || $_POST["jacina"]==NULL || $_POST["rezolucija"]==NULL)
+			{
+				echo "Niste unijeli sve podatke ";
+			}
+
+			if((!is_numeric($_POST["smjer"]) || !is_numeric($_POST["jacina"]) || !is_numeric($_POST["rezolucija"])) || $_POST["rezolucija"]==0)
+				echo "Krivi unos ";
+
+			else
+			{
+				$smjer=$_POST["smjer"];
+				$jacina=$_POST["jacina"];
+				$rezolucija=$_POST["rezolucija"];
+				if ($rezolucija<0) $rezolucija=1;
+				if ($rezolucija>400) $rezolucija=400;
+			
+				$this->createWind_sv($WebDir, $map, $smjer, $jacina, $rezolucija, $korisnik);
+			}
+		}
+
+		if($_POST['wind_option']=="online")
+		{
+
+			copy($WebDir."/files/wind_dir.asc",$WebDir."/user_files/$korisnik/wind_dir.asc");
+			copy($WebDir."/files/wind_speed.asc",$WebDir."/user_files/$korisnik/wind_speed.asc");
+		}
+
+
+
+		?>
+
+
+		<table align="top" border="0" height=70% width=100% style="position: absolute; top: 0%"><tr><td>
+		<div align="top" style="background-color: #FFFFCC;">
+		<b>POSTAVKE VJETRA</b><br /><hr>
+		</div>
+		<input type='radio' name="wind_option" value="online" id="wind_option_online" checked>
+		<b>On-line</b><br />Preuzmi On-line vrijednost vjetra<br />
+		<hr>
+		<b>Unos putem:</b><br />
+		<input type='radio' name="wind_option" value="meteo" id="wind_option_0">
+		<b>Meteo</b><br />
+		File:<INPUT NAME="wind_meteo_file" TYPE="file" onchange='document.getElementById("wind_option_0").checked = true'><br />
+		<hr>
+		<input type='radio' name="wind_option" value="asc" id="wind_option">
+		<b>ASC</b><br />
+		Smjer:<INPUT NAME="wind_dir_asc_file" TYPE="file" onchange='document.getElementById("wind_option").checked = true'><br />
+		Jacina:<INPUT NAME="wind_speed_asc_file" TYPE="file" onchange='document.getElementById("wind_option").checked = true'><br /><hr>
+		<input type='radio' name="wind_option" value="single_value" id="wind_option2">
+		<b>Vrijednost</b><br />
+		Smjer:<input type="text" size="5" autocomplete="off" name="smjer" onchange='document.getElementById("wind_option2").checked = true'><sup>o</sup><br />
+		Jacina:<input type="text" size="5" autocomplete="off" name="jacina" onchange='document.getElementById("wind_option2").checked = true'>km/h<br />
+		Rezolucija:<input type="text" size="5" autocomplete="off" name="rezolucija" onchange='document.getElementById("wind_option2").checked = true'><br /><hr>
+		<input type="submit" name="wind_submit" value="Azuriraj vjetar" align="right" class="rucnoMenu" onMouseOver="this.className = 'rucnoMenuOver';" onMouseOut="this.className = 'rucnoMenu';" style="width: 100%;">
+
+			</td></tr></table>
+		<?php
+		}
+
+		//***************************************************************************************************//
+		//Provjera asc file-a
+		//***************************************************************************************************//
+
+		public function checkAsc($filename)
+		{
+			
+			
+			$windData="";
+			$fh2 = fopen($filename, 'r') or die("can't open file");
+
+			//while (!feof($fh2)) {
+			for($i=0;$i<6;$i++)
+			{
+				//$windData .= fread($fh2, 8192);
+				$windData[$i] = fgets($fh2);
+			}
+			
+			//ncols
+			$windData[0]=preg_replace("/ [^\w]* /"," ",$windData[0]); 
+			$temp = explode(" ", $windData[0]);
+			$ncols=$temp[1];
+			//nrows
+			$windData[1]=preg_replace("/ [^\w]* /"," ",$windData[1]); 
+			$temp = explode(" ", $windData[1]);
+			$nrows=$temp[1];
+			//xllcorner
+			$windData[2]=preg_replace("/ [^\w]* /"," ",$windData[2]); 
+			$temp = explode(" ", $windData[2]);
+			$xllcorner=$temp[1];
+			//yllcorner
+			$windData[3]=preg_replace("/ [^\w]* /"," ",$windData[3]); 
+			$temp = explode(" ", $windData[3]);
+			$yllcorner=$temp[1];
+			//cellsize
+			$windData[4]=preg_replace("/ [^\w]* /"," ",$windData[4]); 
+			$temp = explode(" ", $windData[4]);
+			$cellsize=$temp[1];
+			//NODATA_value
+			$windData[5]=preg_replace("/ [^\w]* /"," ",$windData[5]); 
+			$temp = explode(" ", $windData[5]);
+			$NODATA_value=$temp[1];	
+
+			//echo $ncols."<br>".$nrows."<br>".$xllcorner."<br>".$yllcorner."<br>".$cellsize."<br>".$NODATA_value;
+			
+			$windData="";
+			while (!feof($fh2)) {
+				$windData .= fread($fh2, 8192);
+			}
+			
+			$windData=preg_replace("/\n[^\w]*\n/","\n\n",$windData); 
+			$windData=preg_replace("/ [^\w]* /"," ",$windData);
+
+			fclose($fh2);
+
+			$wind_data = explode(" ", $windData);
+
+			if(count($wind_data)>($ncols*$nrows-5) && count($wind_data)<($ncols*$nrows+5) && $ncols!=0 && $nrows!=0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
+		}
+
+		//***************************************************************************************************//
+		//Convert iz meteo u asc
+		//***************************************************************************************************//
+
+		public function convertMeteoToAsc($WebDir, $filename, $korisnik, $firsthour)
+		{
+
+			
+
+
+			$fh2 = fopen($filename, 'r') or die("can't open file");
+			$windData="";
+
+			for($i=0;$i<5;$i++)
+			{
+				//$windData .= fread($fh2, 8192);
+				$windData[$i] = fgets($fh2);
+			}
+			
+			//BROJ_TOCAKA_X_:
+			$windData[0]=preg_replace("/ [^\w]* /"," ",$windData[0]); 
+			$temp = explode(" ", $windData[0]);
+			$num=0;
+			if($temp[$num]=="") $num++;
+			$num++;
+			$broj_tocaka_x=$temp[$num];
+
+			//BROJ_TOCAKA_Y_:
+			$windData[1]=preg_replace("/ [^\w]* /"," ",$windData[1]); 
+			$temp = explode(" ", $windData[1]);
+			$num=0;
+			if($temp[$num]=="") $num++;
+			$num++;
+			$broj_tocaka_y=$temp[$num];
+
+			//_START_MODELA_:
+			$windData[2]=preg_replace("/ [^\w]* /"," ",$windData[2]); 
+			$temp = explode(" ", $windData[2]);
+			$num=0;
+			if($temp[$num]=="") $num++;
+			$num++;
+			$start_modela=$temp[$num];
+
+			//_BROJ_TERMINA_:
+			$windData[3]=preg_replace("/ [^\w]* /"," ",$windData[3]); 
+			$temp = explode(" ", $windData[3]);
+			$num=0;
+			if($temp[$num]=="") $num++;
+			$num++;
+			$counter=$temp[$num];
+
+
+			$windData[4]=preg_replace("/ [^\w]* /"," ",$windData[4]); 
+			$temp = explode(" ", $windData[4]);
+			$num=0;
+			if($temp[$num]=="") $num++;
+			
+			$windData="";
+			while (!feof($fh2)) {
+				$windData .= fread($fh2, 8192);
+			}
+			
+			$windData=preg_replace("/\n[^\w]*\n/","\n\n",$windData); 
+			$windData=preg_replace("/ [^\w]* /"," ",$windData);
+
+			fclose($fh2);
+
+			$wind_data = explode(" ", $windData);
+
+			$num=0;
+			if($wind_data[$num]=="") $num++;
+
+		$long=array();
+		$lat=array();
+		$tm_x=array();
+		$tm_y=array();
+		$kopno=array();
+
+			for($i=0;$i<=$broj_tocaka_x*$broj_tocaka_y-1;$i++)
+			{
+				if($i==0 && $j==0)
+				{
+					$k1=0;
+					$k2=0;
+					for($j=1;$j<=(($counter*2)+3);$j++)
+					{
+						$wind_data[$i*(($counter*2)+3)+$j]." ";
+						$long[0]=$wind_data[1];
+						$lat[0]=$wind_data[2];
+						$kopno[0]=$wind_data[3];
+
+						//$projOutObj =ms_newprojectionobj("proj=tmerc,ellps=WGS84,units=m,lon_0=15,k=0.9999,x_0=6500000,y_0=0,no_defs");
+						$projOutObj = ms_newprojectionobj("init=epsg:900913");
+						$projInObj = ms_newprojectionObj ("proj=longlat,ellps=WGS84,no_defs" );
+
+						$poPoint = ms_newpointobj();
+						$poPoint->setXY($long[$i], $lat[$i]); //original coordinates
+						$poPoint->project($projInObj, $projOutObj);	
+
+						$tm_x[0]=$poPoint->x;
+						$tm_y[0]=$poPoint->y;
+
+						$tm_x_min=$tm_x[0];
+						$tm_y_min=$tm_y[0];
+						$tm_x_max=$tm_x[0];
+						$tm_y_max=$tm_y[0];
+
+
+						if($j>3)
+						{
+							
+							if($j%2==0 && $j != 0) { $wind_u[0][$k1]=$wind_data[$j]; $k1++;}
+							if($j%2==1 && $j != 1) { $wind_v[0][$k2]=$wind_data[$j]; $k2++;}
+						}
+					}
+				}
+				else
+				{
+					$k1=0;
+					$k2=0;
+					for($j=1;$j<=(($counter*2)+3);$j++)
+					{
+						//if($i< 5) echo $wind_data[$i*(($counter*2)+3)+$j]." ";
+						if($j==1) $long[$i]=$wind_data[$i*(($counter*2)+3)+$j];
+						if($j==2) $lat[$i]=$wind_data[$i*(($counter*2)+3)+$j];
+						if($j==3) $kopno[$i]=$wind_data[$i*(($counter*2)+3)+$j];
+
+						if($j%(2*$counter+3)>3 ||  $j==(2*$counter+3))
+						{
+							if($j%2==0 && $j != 0) { $wind_u[$i][$k1]=$wind_data[$i*(($counter*2)+3)+$j]; $k1++;}
+							if($j%2==1 && $j != 1) { $wind_v[$i][$k2]=$wind_data[$i*(($counter*2)+3)+$j]; $k2++;}
+						}
+
+					}
+				}
+				
+			}
+
+			for($i=0;$i<=$broj_tocaka_x*$broj_tocaka_y-1;$i++)
+			{
+						//$projOutObj =ms_newprojectionobj("proj=tmerc,ellps=WGS84,units=m,lon_0=15,k=0.9999,x_0=6500000,y_0=0,no_defs");
+						$projOutObj = ms_newprojectionobj("init=epsg:900913");
+						$projInObj = ms_newprojectionObj ("proj=longlat,ellps=WGS84,no_defs" );
+
+						$poPoint = ms_newpointobj();
+						$poPoint->setXY($long[$i], $lat[$i]); //original coordinates
+						$poPoint->project($projInObj, $projOutObj);	
+
+						$tm_x[$i]=$poPoint->x;
+						$tm_y[$i]=$poPoint->y;
+
+
+						if(	$tm_x[$i] < $tm_x_min ) $tm_x_min = $tm_x[$i];
+						if(	$tm_x[$i] > $tm_x_max ) $tm_x_max = $tm_x[$i];
+						if(	$tm_y[$i] < $tm_y_min ) $tm_y_min = $tm_y[$i];
+						if(	$tm_y[$i] > $tm_y_max ) $tm_y_max = $tm_y[$i];
+			}
+
+			$column1_nodouble=((6-$hour)/3);
+			$column1=((6-$hour)/3+1)+2;
+
+			for($i=0;$i<=$broj_tocaka_x*$broj_tocaka_y-1;$i++)
+			{
+				for($j=0;$j<16;$j++)
+				{
+					$wind_speed[$j][$i]=sqrt($wind_u[$i][$j]*$wind_u[$i][$j]+$wind_v[$i][$j]*$wind_v[$i][$j]);
+					$wind_dir[$j][$i]=atan2(-$wind_u[$i][$j],-$wind_v[$i][$j])*57.29578;
+
+				}
+			}
+
+
+
+
+			$ncols=$broj_tocaka_x;
+			$nrows=$broj_tocaka_y;
+			$xllcorner=$tm_x_min;
+			$yllcorner=$tm_y_min;
+			$cellsize=($tm_y_max-$tm_y_min)/$broj_tocaka_y;
+			$NODATA_value=-9999;
+
+
+		$year=$start_modela[0].$start_modela[1].$start_modela[2].$start_modela[3];
+		$month=$start_modela[4].$start_modela[5];
+		$day=$start_modela[6].$start_modela[7];
+		$hour=$start_modela[8].$start_modela[9];
+		$hoursave=$hour;
+
+
+		$string=$hour++;
+		$string=$hour--;
+
+
+		for($k=0;$k<16;$k++)
+		{
+
+			$new_text=
+			"ncols ".$ncols."\nnrows ".$nrows."\nxllcorner ".$xllcorner."\nyllcorner ".$yllcorner."\ncellsize ".$cellsize."\nNODATA_value ".$NODATA_value."\n";
+
+			$new_text2=
+			"ncols ".$ncols."\nnrows ".$nrows."\nxllcorner ".$xllcorner."\nyllcorner ".$yllcorner."\ncellsize ".$cellsize."\nNODATA_value ".$NODATA_value."\n";
+
+			$new_text3=
+			"ncols ".$ncols."\nnrows ".$nrows."\nxllcorner ".$xllcorner."\nyllcorner ".$yllcorner."\ncellsize ".$cellsize."\nNODATA_value ".$NODATA_value."\n";
+
+			for($i=$nrows-1;$i>-1;$i=$i-1)
+			{
+				for($j=0;$j<$ncols;$j++)
+				{
+					$speed=$wind_speed[$k][$i*$ncols+$j]*3.6;
+					$new_text.=$speed." ";
+					$new_text2.=$wind_dir[$k][$i*$ncols+$j]." ";
+					$new_text3.=$kopno[$i*$ncols+$j]." ";
+				}
+				$new_text.="\n";
+				$new_text2.="\n";
+				$new_text3.="\n";
+
+
+			}
+
+			$string=$hour;
+			$hour=$hour+3;
+
+			$filename=$WebDir."/user_files/$korisnik/meteo/wind_dir_meteo_$string.asc";
+			$fh = fopen($filename, 'w') or die("can't open file");
+						fwrite($fh, $new_text2);
+						fclose($fh);
+
+			$filename=$WebDir."/user_files/$korisnik/meteo/wind_speed_meteo_$string.asc";
+			$fh = fopen($filename, 'w') or die("can't open file");
+						fwrite($fh, $new_text);
+						fclose($fh);
+
+
+		}
+
+
+
+
+
+		}
+
+
+
+		//***************************************************************************************************//
+		//Kreiranje asc file-a
+		//***************************************************************************************************//
+
+		public function createWind_sv($WebDir, $map, $smjer, $jacina, $rezolucija, $korisnik)
+		{
+			$ncols=floor($rezolucija*(8/6));
+			$nrows=$rezolucija;
+			$xllcorner=$map->extent->minx;
+			$yllcorner=$map->extent->miny;
+			$cellsize=($map->extent->maxx - $map->extent->minx)/$ncols;
+			$NODATA_value=-9999;
+
+			$new_text=
+			"ncols ".$ncols."\nnrows ".$nrows."\nxllcorner ".$xllcorner."\nyllcorner ".$yllcorner."\ncellsize ".$cellsize."\nNODATA_value ".$NODATA_value."\n";
+
+			$new_text2=
+			"ncols ".$ncols."\nnrows ".$nrows."\nxllcorner ".$xllcorner."\nyllcorner ".$yllcorner."\ncellsize ".$cellsize."\nNODATA_value ".$NODATA_value."\n";
+
+			for($i=0;$i<$nrows;$i++)
+			{
+				for($j=0;$j<$ncols;$j++)
+				{
+					$new_text.=$smjer." ";
+					$new_text2.=$jacina." ";
+				}
+				$new_text.="\n";
+				$new_text2.="\n";
+			}
+
+			$filename=$WebDir."/user_files/$korisnik/wind_dir.asc";
+			$filename2=$WebDir."/user_files/$korisnik/wind_speed.asc";
+
+
+			$fh = fopen($filename, 'w') or die("can't open file");
+						fwrite($fh, $new_text);
+						fclose($fh);
+
+			$fh2 = fopen($filename2, 'w') or die("can't open file");
+					fwrite($fh2, $new_text2);
+					fclose($fh2);
+
+		}
+		
+		
+		public function preLoadFullAscFiles($rastForWindRegion, $WebDir, $korisnik)
+		{
+			
+			$text="g.mapset mapset=$korisnik
+g.region rast=$rastForWindRegion
+
+g.remove rast='windDirFromAsc'
+g.remove rast='windSpeedFromAsc'
+g.remove rast='windFromAsc'
+
+r.in.arc input=".$this->Wind_dirAsc_temp." output=windDirFromAsc type=FCELL mult=1.0
+r.in.arc input=".$this->Wind_speedAsc_temp." output=windSpeedFromAsc type=FCELL mult=1.0
+
+			";
+			
+			//echo $text;
+			
+			$filename="$WebDir/user_files/$korisnik/calculate_wind_2.sh";
+			$fp = fopen($filename, 'w');
+			fwrite($fp, $text);
+			fclose($fp);
+
+			$stringps="$WebDir/user_files/$korisnik/launch_wind_2.sh";
+			$ps = $this->run_in_background($stringps);
+			
+			while($this->is_process_running($ps))
+			{
+					sleep(0.3);
+			}
+		}
+		
+
+		//***************************************************************************************************//
+
+		//	Funkcija koja iz .asc file procita podatke, prilagodi ih trenutnom prikazu u mapserveru,
+		//	odnosno georeferencira ih, izraèuna prosijeènu vrijednost, te prilagodi koordinatnom sustavu
+		//	samog mapservera koji ispisuje od dolje lijeve prema desno i prema gore, za razliku od samog
+		//	asc file-a koji je od gore lijevo prema desno i dolje.
+
+		//***************************************************************************************************//
+		public function loadFromAsc($type, $minx, $miny, $x_step, $y_step, $numtocaka, $isSpeed, $WebDir, $korisnik)
+		{
+
+			$rand=rand(0,99999);
+			
+			$filename="";
+			$input="";
+			
+			if(!strcmp($type,"windDir"))
+			{
+				//Isti su
+				$filename=$this->Wind_dirAsc_temp;
+				$input="windDirFromAsc";
+			}
+			else
+			{
+				$filename=$this->Wind_speedAsc_temp;	
+				$input="windSpeedFromAsc";				
+			}
+			
+	
+			$n=$miny + $numtocaka*$y_step;
+			$s=$miny;
+			$e=$minx + $numtocaka*$x_step;
+			$w=$minx;
+			
+			$text="g.mapset mapset=$korisnik
+
+g.region rast=$input n=$n s=$s e=$e w=$w rows=$numtocaka cols=$numtocaka
+echo \"#Start\"
+r.out.arc input=$input out=-
+echo \"#End\"
+			";
+			
+			$filename="$WebDir/user_files/$korisnik/calculate_wind_2.sh";
+			$fp = fopen($filename, 'w');
+			fwrite($fp, $text);
+			fclose($fp);
+
+			$stringps="$WebDir/user_files/$korisnik/launch_wind_2.sh";
+			$values=shell_exec($stringps);
+			
+			
+			
+			$delimeterLeft="#Start";
+			$delimeterRight="#End";
+			$posLeft  = stripos($values,$delimeterLeft)+strlen($delimeterLeft);
+			$posRight = stripos($values,$delimeterRight,$posLeft+1);
+			$string=substr($values,$posLeft,$posRight-$posLeft);	
+			
+			
+			
+			//echo $string."<br>";
+			
+			$windData=explode("\n", $string);
+			//print_r($windData);
+			
+			$windData[1]=preg_replace("/ [^\w]* /"," ",$windData[1]); 
+			$temp = explode(" ", $windData[1]);
+			$ncols=$temp[1];
+			//nrows
+			$windData[2]=preg_replace("/ [^\w]* /"," ",$windData[2]); 
+			$temp = explode(" ", $windData[2]);
+			$nrows=$temp[1];
+			//xllcorner
+			$windData[3]=preg_replace("/ [^\w]* /"," ",$windData[3]); 
+			$temp = explode(" ", $windData[3]);
+			$xllcorner=$temp[1];
+			//yllcorner
+			$windData[4]=preg_replace("/ [^\w]* /"," ",$windData[4]); 
+			$temp = explode(" ", $windData[4]);
+			$yllcorner=$temp[1];
+			//cellsize
+			$windData[5]=preg_replace("/ [^\w]* /"," ",$windData[5]); 
+			$temp = explode(" ", $windData[5]);
+			$cellsize=$temp[1];
+			//NODATA_value
+			$windData[6]=preg_replace("/ [^\w]* /"," ",$windData[6]); 
+			$temp = explode(" ", $windData[6]);
+			$NODATA_value=$temp[1];	
+			
+			//echo $ncols." ".$nrows." ".$xllcorner." ".$yllcorner." ".$cellsize." ".$NODATA_value;
+			
+			$data="";
+			for($i=7; $i<7+$numtocaka; $i++)
+			{
+				$data.=$windData[$i];
+			}
+			
+			$windData=$data;
+			
+			$wind_data = explode(" ", $windData);
+			unset($windData);
+
+			$wind2D=array();	
+			$listSize=0;
+
+			$nrows=(int)$nrows;
+
+			for($i=$nrows-1;$i>=0;$i--)
+			{
+				for($j=0;$j<$ncols;$j++)
+				{
+					$wind2D[$i][$j]=$wind_data[$listSize];
+					$listSize++;
+				}	
+			}
+			
+			for($i=0;$i<$ncols;$i++)
+			{
+				$wind_xcoord[$i]=$xllcorner+$i*$cellsize;
+
+			}
+			for($j=0;$j<$nrows;$j++)
+			{
+				$wind_ycoord[$j]=$yllcorner+$j*$cellsize;
+			}
+
+
+			$localExtent_minx=array();
+			$localExtent_miny=array();
+			$localExtent_maxx=array();
+			$localExtent_maxy=array();
+
+			for($b=0;$b<$numtocaka;$b++)
+			{
+				for($c=0;$c<$numtocaka;$c++)
+				{
+					$localExtent_minx[$b][$c]=$minx+$c*$x_step;
+					$localExtent_maxx[$b][$c]=$localExtent_minx[$b][$c]+$x_step;
+					$localExtent_miny[$b][$c]=$miny+$b*$y_step;
+					$localExtent_maxy[$b][$c]=$localExtent_miny[$b][$c]+$y_step;
+				}
+			}
+
+		$lastWind=0;
+
+
+
+
+
+		$faster=array();
+		$wind1=array();
+			for($b=0;$b<$numtocaka;$b++)
+			{
+				for($c=0;$c<$numtocaka;$c++)
+				{
+					$count=0;
+					$average=0;
+					for($i=0;$i<$nrows;$i++)
+					{
+						$faster[$i]=0;
+			
+						for($j=0;$j<$ncols;$j++)
+						{
+							if($wind_xcoord[$j]>=$localExtent_minx[$b][$c] && $wind_xcoord[$j]<=$localExtent_maxx[$b][$c] && $wind_ycoord[$i]>=$localExtent_miny[$b][$c] && $wind_ycoord[$i] <= $localExtent_maxy[$b][$c])
+							{
+								$count++;
+								if($wind2D[$i][$j] != (int)$NODATA_value)
+								{
+									$average+=$wind2D[$i][$j];
+									$faster[$i]++;
+								}
+							}
+						}
+
+
+						if($i>0 && $faster[$i]==0 && $faster[$i-1]!=0)
+						{						
+								break;
+						}
+					}
+				
+					if($count!=0)
+					{
+						$average=$average/$count;
+
+					}
+					if($count==0)
+					{
+						$average=-9999;
+						//echo $average;
+					}
+				
+					$wind1[$b][$c]=$average;
+				}
+			}
+
+			if($isSpeed)
+			{
+				for($i=0;$i<$numtocaka;$i++)
+				{
+					for($j=0;$j<$numtocaka;$j++)
+					{
+
+
+
+						$wind1[$i][$j]=$wind1[$i][$j]*0.27778;
+
+						if($wind1[$i][$j]>=0 && $wind1[$i][$j]<0.5)
+						{
+							$wind11[$i][$j]=1;
+						}
+						if($wind1[$i][$j]>=0.5 && $wind1[$i][$j]<1)
+						{
+							$wind11[$i][$j]=2;
+						}
+						if($wind1[$i][$j]>=1.0 && $wind1[$i][$j]<3.6)
+						{
+							$wind11[$i][$j]=3;
+						}
+						if($wind1[$i][$j]>=3.6 && $wind1[$i][$j]<6.2)
+						{
+							$wind11[$i][$j]=4;
+						}
+						if($wind1[$i][$j]>=6.2 && $wind1[$i][$j]<8.7)
+						{
+							$wind11[$i][$j]=5;
+						}
+						if($wind1[$i][$j]>=8.7 && $wind1[$i][$j]<11.3)
+						{
+							$wind11[$i][$j]=6;
+						}
+						if($wind1[$i][$j]>=11.3 && $wind1[$i][$j]<13.9)
+						{
+							$wind11[$i][$j]=7;
+						}
+						if($wind1[$i][$j]>=13.9 && $wind1[$i][$j]<16.5)
+						{
+							$wind11[$i][$j]=8;
+						}
+						if($wind1[$i][$j]>=16.5 && $wind1[$i][$j]<19)
+						{
+							$wind11[$i][$j]=9;
+						}
+						if($wind1[$i][$j]>=19 && $wind1[$i][$j]<21.6)
+						{
+							$wind11[$i][$j]="a";
+						}
+						if($wind1[$i][$j]>=19 && $wind1[$i][$j]<24.2)
+						{
+							$wind11[$i][$j]="b";
+						}
+						if($wind1[$i][$j]>=24.2 && $wind1[$i][$j]<26.8)
+						{
+							$wind11[$i][$j]="c";
+						}
+						if($wind1[$i][$j]>=26.8 && $wind1[$i][$j]<29.3)
+						{
+							$wind11[$i][$j]="d";
+						}
+						if($wind1[$i][$j]>=29.3 && $wind1[$i][$j]<31.9)
+						{
+							$wind11[$i][$j]="e";
+						}
+						if($wind1[$i][$j]>=31.9 && $wind1[$i][$j]<34.5)
+						{
+							$wind11[$i][$j]="f";
+						}
+						if($wind1[$i][$j]>=34.5 && $wind1[$i][$j]<37)
+						{
+							$wind11[$i][$j]="g";
+						}
+						if($wind1[$i][$j]>=37 && $wind1[$i][$j]<39.6)
+						{
+							$wind11[$i][$j]="h";
+						}
+						if($wind1[$i][$j]>=39.6 && $wind1[$i][$j]<42.2)
+						{
+							$wind11[$i][$j]="i";
+						}
+						if($wind1[$i][$j]>=42.2 && $wind1[$i][$j]<44.8)
+						{
+							$wind11[$i][$j]="j";
+						}
+						if($wind1[$i][$j]>=44.8 && $wind1[$i][$j]<47.3)
+						{
+							$wind11[$i][$j]="k";
+						}
+						if($wind1[$i][$j]>=47.3 && $wind1[$i][$j]<49.9)
+						{
+							$wind11[$i][$j]="l";
+						}
+						if($wind1[$i][$j]>=49.9 && $wind1[$i][$j]<52.5)
+						{
+							$wind11[$i][$j]="m";
+						}
+						if($wind1[$i][$j]>=52.5 && $wind1[$i][$j]<55)
+						{
+							$wind11[$i][$j]="n";
+						}
+						if($wind1[$i][$j]>=55 && $wind1[$i][$j]<57.6)
+						{
+							$wind11[$i][$j]="o";
+						}
+						if($wind1[$i][$j]>=57.6)
+						{
+							$wind11[$i][$j]="p";
+						}
+
+						$wind1[$i][$j]=$wind11[$i][$j];
+
+					}
+				}
+			}
+
+			return $wind1;
+		}
+
+		//***************************************************************************************************//
+
+		//	Jednostavna funkcija koja kreira Point i georeferencira ga na temelju ulaznih parametara
+
+		//***************************************************************************************************//
+		public function windPoint ($x,$y) {
+
+		$point = ms_newPointObj(); 
+		$point->setXY($x,$y);
+		return $point;
+		}
+
+		//***************************************************************************************************//
+
+		//	Priprema prije izvodjenja drawWind. Postavljaju se parametri o layeru, klasi tog layera,
+		//	i style-u tog layera. Parametri angle i size kasnije se (mogu) mijenjati.
+
+		//***************************************************************************************************//
+		public function prepareWind(&$map, &$layera2, &$classa2, &$stylea2, $numtocaka)
+		{
+			//$layera2 = $map->getLayerByName('Wind_dir');
+			$layera2->set("type", MS_LAYER_POINT);
+			$layera2->set("transparency", 0);
+			$classa2->label->color->setRGB(0,0,0);
+			$classa2->label->set("type", MS_TRUETYPE);
+			$classa2->label->set("size", 80);
+			$classa2->label->set("antialias", MS_TRUE);
+			$classa2->label->set("font", "wind_arrows");
+			$classa2->label->set("partials", MS_TRUE);
+			$classa2->label->set("angle", 0);
+
+		}
+
+		//***************************************************************************************************//
+
+		//	Ovom se funkcijom iscrtavaju smjerovi/jacine vjetra, bitno je mjesto pozivanja ove funkcije
+		//	pogledati PRIMJER KORISTENJA. Mijenja se kut (velicina) strelice (ili bilo kojeg drugog znaka)
+		//	Strelica je samo znak "1" u fontu koji se koristi i koji je definiran u .map file-u.
+
+		//***************************************************************************************************//
+		public function drawWind($map,$Wind_dirAsc, $Wind_speedAsc, &$mylayer, &$myclass, $numtocaka, &$image, $WebDir, $rastForWindRegion, $korisnik, $isVlastiti)
+		{
+
+
+		
+			$new_bounds=explode(",", $_GET["BBOX"]);
+
+			//$projOutObj =ms_newprojectionobj("proj=tmerc,ellps=WGS84,units=m,lon_0=15,k=0.9999,x_0=6500000,y_0=0,no_defs");
+			$projOutObj = ms_newprojectionobj("init=epsg:900913");
+			$projInObj = ms_newprojectionObj ("proj=merc,a=6378137,b=6378137,lat_ts=0.0,lon_0=0.0,x_0=0.0,y_0=0,k=1.0,units=m,nadgrids=@null,no_defs" );
+
+			$poPoint = ms_newpointobj();
+			$poPoint->setXY($new_bounds[0],$new_bounds[1]); //original coordinates
+			$poPoint->project($projInObj, $projOutObj);	
+			
+			$poPoint2 = ms_newpointobj();
+			$poPoint2->setXY($new_bounds[2],$new_bounds[3]); //original coordinates
+			$poPoint2->project($projInObj, $projOutObj);	
+
+
+			$map->extent->minx=$poPoint->x;    
+			$map->extent->miny=$poPoint->y;		
+			$map->extent->maxx=$poPoint2->x;  
+			$map->extent->maxy=$poPoint2->y;    
+
+			$map->setExtent($poPoint->x, $poPoint->y, $poPoint2->x, $poPoint2->y);
+
+			//echo $map->extent->minx." ".$map->extent->miny." ".$map->extent->maxx." ".$map->extent->maxy ;
+			
+			
+			$x_step=($map->extent->maxx-$map->extent->minx)/($numtocaka);
+			$y_step=($map->extent->maxy-$map->extent->miny)/($numtocaka);
+
+
+			$res=($map->extent->maxx-$map->extent->minx)/50;
+
+			//echo $res;
+
+
+		//Dio gdje Grass treba prilagoditi
+
+			$n=$map->extent->maxy;
+			$s=$map->extent->miny;
+			$e=$map->extent->maxx;
+			$w=$map->extent->minx;
+
+
+			//$Wind_dirAsc_temp=$WebDir."/user_files/$korisnik/wind_dir_temp.asc";
+			//$Wind_speedAsc_temp=$WebDir."/user_files/$korisnik/wind_speed_temp.asc";
+
+			$Wind_dirAsc_temp = $this->Wind_dirAsc_temp;
+			$Wind_speedAsc_temp = $this->Wind_speedAsc_temp;
+			
+			//Ucitaj originalne asc fileove, da se kasnije ne duplira
+			$this->preLoadFullAscFiles($rastForWindRegion, $WebDir, $korisnik);
+
+			
+			$wind_d=$this->loadFromAsc("windDir", $map->extent->minx, $map->extent->miny, $x_step, $y_step, $numtocaka, false, $WebDir, $korisnik);
+			$wind_s=$this->loadFromAsc("windSpeed", $map->extent->minx, $map->extent->miny, $x_step, $y_step, $numtocaka, true, $WebDir, $korisnik);
+
+	
+			$points=Array();
+
+
+
+			for($i=0;$i<$numtocaka;$i++)
+			{
+				for($j=0;$j<$numtocaka;$j++)
+				{
+
+					$wind_d[$j][$i]=-$wind_d[$j][$i]-90;
+					
+					$myclass->label->set("size", 70);
+					$myclass->label->set("angle", $wind_d[$j][$i]);
+					if(is_string($wind_s[$j][$i]))
+					{
+						$myclass->label->color->setRGB(255,15,0);
+					}
+					else
+					{
+						$myclass->label->color->setRGB(0,0,0);
+					}
+					$points[$i][$j] = $this->windPoint($map->extent->minx + $i*$x_step+($x_step/2), $map->extent->miny+$j*$y_step+($y_step/2));
+
+
+					if($wind_d[$j][$i]!=-9999)
+					{
+						$points[$i][$j]->draw($map, $mylayer, $image, 0, $wind_s[$j][$i]);
+					}
+
+				}
+			}
+
+			//Dvije vazne linije koda koje su bitne kako bi funkcioniralo ovo u openlayers okruzenju, extent se postavi na trenuni tile i renderira se slika te posalje na buffer
+			$map->drawLabelCache($image);
+			$image->saveImage("", $map);
+			
+			
+
+			
+		}
+
+			public function run_in_background($Command, $Priority = 0)
+			{
+				if($Priority)
+					$PID = shell_exec("nohup nice -n $Priority $Command 2> /dev/null & echo $!");
+				else
+			  $PID = shell_exec("nohup $Command > /dev/null 2> /dev/null & echo $!");
+					//$PID = shell_exec("nohup $Command 2> /dev/null & echo $!");
+				return($PID);
+			}
+
+			public function is_process_running($PID)
+			{
+				exec("ps $PID", $ProcessState);
+				return(count($ProcessState) >= 2);
+			}
+
+
+		public function asd($map,$Wind_dirAsc, $Wind_speedAsc, &$mylayer, &$myclass, $numtocaka, &$image, $WebDir, $rastForWindRegion, $korisnik, $isVlastiti)
+		{
+		
+					
+					$Wind_dirAsc_temp=$WebDir."/user_files/$korisnik/wind_dir_temp_$isVlastiti.asc";
+					$Wind_speedAsc_temp=$WebDir."/user_files/$korisnik/wind_speed_temp_$isVlastiti.asc";
+					
+
+					$this->Wind_dirAsc_temp = $Wind_dirAsc_temp;
+					$this->Wind_speedAsc_temp = $Wind_speedAsc_temp;
+
+					$nstt="g.mapset mapset=$korisnik
+					
+g.region rast=$rastForWindRegion@WebGis res=750
+g.remove rast='wind_dir_temp_$korisnik'
+r.in.arc input=$Wind_dirAsc output=wind_dir_temp_$korisnik type=FCELL mult=1.0
+r.out.arc input=wind_dir_temp_$korisnik output=$Wind_dirAsc_temp dp=1
+g.remove rast='wind_speed_temp_$korisnik'
+r.in.arc input=$Wind_speedAsc output=wind_speed_temp_$korisnik type=FCELL mult=1.0
+r.out.arc input=wind_speed_temp_$korisnik output=$Wind_speedAsc_temp dp=2";
+
+					
+
+					$filename="$WebDir/user_files/$korisnik/calculate_wind.sh";
+					$fp = fopen($filename, 'w');
+					fwrite($fp, $nstt);
+					fclose($fp);
+
+					$stringps="$WebDir/user_files/$korisnik/launch_wind.sh";
+					$ps = $this->run_in_background($stringps);
+					
+				
+
+					
+					while($this->is_process_running($ps))
+					{
+							sleep(1);
+					}
+
+		}
+}
+
+
+
+//dl("php_mapscript.so");
+session_start();
+
+
+//echo $korisnik;
+
+//
+
+$isVlastiti=0;
+
+
+if($_GET["vjetar"]=="vlastiti")
+{
+$Wind_dirAsc="$WebDir/user_files/$korisnik/wind_dir.asc"; 		
+$Wind_speedAsc="$WebDir/user_files/$korisnik/wind_speed.asc";	
+$isVlastiti=1;
+}
+else
+{
+$Wind_dirAsc="/home/holistic/meteoArhiva/current/wind_dir.asc"; 		
+$Wind_speedAsc="/home/holistic/meteoArhiva/current/wind_speed.asc";	
+$isVlastiti=0;
+}
+
+
+$rastForWindRegion='el';
+$wms_map="$WebDir/vjetar/webgiszupanija.map";
+
+
+
+
+
+$request = ms_newowsrequestobj();
+
+
+foreach ($_REQUEST as $key =>$value)
+{
+	/*if(!strcmp($key,"WIDTH"))
+	{
+		$value=$value*5;
+	}
+	if(!strcmp($key,"HEIGHT"))
+	{
+		$value=$value*5;
+	}*/
+	
+	$request->setParameter($key,$value);
+}
+ms_ioinstallstdouttobuffer();
+
+
+if($request->getValueByName('SERVICE') == 'WMS'){
+$oMap = ms_newMapobj("$wms_map");
+}
+if($request->getValueByName('SERVICE') == 'WFS'){
+$oMap = ms_newMapobj("$wfs_map");
+}
+
+
+$mylayer = $oMap->getLayerByName("wind");
+$myclass = $mylayer->getClass(0);
+$mystyle = $myclass->getStyle(0);
+
+$image=$oMap->draw();
+
+
+
+
+
+$vlastitiWind = new olWind();
+
+
+
+
+$vlastitiWind->asd($oMap,$Wind_dirAsc,$Wind_speedAsc, $mylayer, $myclass, $numtocaka, $image, $WebDir, $rastForWindRegion, $korisnik, $isVlastiti);
+
+$vlastitiWind->drawWind($oMap,$Wind_dirAsc,$Wind_speedAsc, $mylayer, $myclass, $numtocaka, $image, $WebDir, $rastForWindRegion, $korisnik, $isVlastiti);
+
+
+
+$oMap->drawLabelCache($image);
+
+$oMap->owsdispatch($request);
+
+$contenttype = ms_iostripstdoutbuffercontenttype();
+if ($contenttype == 'image/png'){
+header('Content-type: image/png; mode=24bit');
+ms_iogetStdoutBufferBytes();
+}
+if ($contenttype == 'image/png; mode=24bit'){
+header('Content-type: image/png; mode=24bit');
+ms_iogetStdoutBufferBytes();
+}
+if ($contenttype == 'application/vnd.ogc.wms_xml'){
+$buffer = ms_iogetstdoutbufferstring();
+header('Content-type: text/xml');
+echo $buffer;
+}
+if ($contenttype == 'application/vnd.ogc.gml'){
+
+$buffer = ms_iogetstdoutbufferstring();
+header('Content-type: text/xml');
+echo $buffer;
+}
+if ($contenttype == 'text/xml'){
+$buffer = ms_iogetstdoutbufferstring();
+header('Content-type: text/xml');
+echo $buffer;
+}
+if ($contenttype == 'text/html'){
+$buffer = ms_iogetstdoutbufferstring();
+header('Content-type: text/html');
+echo $buffer;
+}
+ 
+ms_ioresethandlers();
+
+
+?>
+
+
+
+<?php
+/***stara funkcija**/
+/*
+public function loadFromAsc($filename, $minx, $miny, $x_step, $y_step, $numtocaka, $isSpeed)
+		{
+
+			$windData=array();
+			$fh2 = fopen($filename, 'r') or die("can't open file $filename");
+
+			//while (!feof($fh2)) {
+			for($i=0;$i<6;$i++)
+			{
+				//$windData .= fread($fh2, 8192);
+				$windData[$i] = fgets($fh2);
+			}
+			
+
+
+			//ncols
+			$windData[0]=preg_replace("/ [^\w]* /"," ",$windData[0]); 
+			$temp = explode(" ", $windData[0]);
+			$ncols=$temp[1];
+			//nrows
+			$windData[1]=preg_replace("/ [^\w]* /"," ",$windData[1]); 
+			$temp = explode(" ", $windData[1]);
+			$nrows=$temp[1];
+			//xllcorner
+			$windData[2]=preg_replace("/ [^\w]* /"," ",$windData[2]); 
+			$temp = explode(" ", $windData[2]);
+			$xllcorner=$temp[1];
+			//yllcorner
+			$windData[3]=preg_replace("/ [^\w]* /"," ",$windData[3]); 
+			$temp = explode(" ", $windData[3]);
+			$yllcorner=$temp[1];
+			//cellsize
+			$windData[4]=preg_replace("/ [^\w]* /"," ",$windData[4]); 
+			$temp = explode(" ", $windData[4]);
+			$cellsize=$temp[1];
+			//NODATA_value
+			$windData[5]=preg_replace("/ [^\w]* /"," ",$windData[5]); 
+			$temp = explode(" ", $windData[5]);
+			$NODATA_value=$temp[1];	
+
+
+			$windData="";
+			while (!feof($fh2)) {
+				$windData .= fread($fh2, 8192);
+			}
+			
+			fclose($fh2);
+
+			$wind_data = explode(" ", $windData);
+			unset($windData);
+
+			$wind2D=array();	
+			$listSize=0;
+
+			$nrows=(int)$nrows;
+
+			for($i=$nrows-1;$i>=0;$i--)
+			{
+				for($j=0;$j<$ncols;$j++)
+				{
+					$wind2D[$i][$j]=$wind_data[$listSize];
+					$listSize++;
+				}	
+			}
+			
+			for($i=0;$i<$ncols;$i++)
+			{
+				$wind_xcoord[$i]=$xllcorner+$i*$cellsize;
+
+			}
+			for($j=0;$j<$nrows;$j++)
+			{
+				$wind_ycoord[$j]=$yllcorner+$j*$cellsize;
+			}
+
+
+			$localExtent_minx=array();
+			$localExtent_miny=array();
+			$localExtent_maxx=array();
+			$localExtent_maxy=array();
+
+			for($b=0;$b<$numtocaka;$b++)
+			{
+				for($c=0;$c<$numtocaka;$c++)
+				{
+					$localExtent_minx[$b][$c]=$minx+$c*$x_step;
+					$localExtent_maxx[$b][$c]=$localExtent_minx[$b][$c]+$x_step;
+					$localExtent_miny[$b][$c]=$miny+$b*$y_step;
+					$localExtent_maxy[$b][$c]=$localExtent_miny[$b][$c]+$y_step;
+				}
+			}
+
+		$lastWind=0;
+
+
+
+
+
+		$faster=array();
+		$wind1=array();
+			for($b=0;$b<$numtocaka;$b++)
+			{
+				for($c=0;$c<$numtocaka;$c++)
+				{
+					$count=0;
+					$average=0;
+					for($i=0;$i<$nrows;$i++)
+					{
+						$faster[$i]=0;
+			
+						for($j=0;$j<$ncols;$j++)
+						{
+							if($wind_xcoord[$j]>=$localExtent_minx[$b][$c] && $wind_xcoord[$j]<=$localExtent_maxx[$b][$c] && $wind_ycoord[$i]>=$localExtent_miny[$b][$c] && $wind_ycoord[$i] <= $localExtent_maxy[$b][$c])
+							{
+								$count++;
+								if($wind2D[$i][$j] != (int)$NODATA_value)
+								{
+									$average+=$wind2D[$i][$j];
+									$faster[$i]++;
+								}
+							}
+						}
+
+
+						if($i>0 && $faster[$i]==0 && $faster[$i-1]!=0)
+						{						
+								break;
+						}
+					}
+				
+					if($count!=0)
+					{
+						$average=$average/$count;
+
+					}
+					if($count==0)
+					{
+						$average=-9999;
+						//echo $average;
+					}
+				
+					$wind1[$b][$c]=$average;
+				}
+			}
+
+			if($isSpeed)
+			{
+				for($i=0;$i<$numtocaka;$i++)
+				{
+					for($j=0;$j<$numtocaka;$j++)
+					{
+
+
+
+						$wind1[$i][$j]=$wind1[$i][$j]*0.27778;
+
+						if($wind1[$i][$j]>=0 && $wind1[$i][$j]<0.5)
+						{
+							$wind11[$i][$j]=1;
+						}
+						if($wind1[$i][$j]>=0.5 && $wind1[$i][$j]<1)
+						{
+							$wind11[$i][$j]=2;
+						}
+						if($wind1[$i][$j]>=1.0 && $wind1[$i][$j]<3.6)
+						{
+							$wind11[$i][$j]=3;
+						}
+						if($wind1[$i][$j]>=3.6 && $wind1[$i][$j]<6.2)
+						{
+							$wind11[$i][$j]=4;
+						}
+						if($wind1[$i][$j]>=6.2 && $wind1[$i][$j]<8.7)
+						{
+							$wind11[$i][$j]=5;
+						}
+						if($wind1[$i][$j]>=8.7 && $wind1[$i][$j]<11.3)
+						{
+							$wind11[$i][$j]=6;
+						}
+						if($wind1[$i][$j]>=11.3 && $wind1[$i][$j]<13.9)
+						{
+							$wind11[$i][$j]=7;
+						}
+						if($wind1[$i][$j]>=13.9 && $wind1[$i][$j]<16.5)
+						{
+							$wind11[$i][$j]=8;
+						}
+						if($wind1[$i][$j]>=16.5 && $wind1[$i][$j]<19)
+						{
+							$wind11[$i][$j]=9;
+						}
+						if($wind1[$i][$j]>=19 && $wind1[$i][$j]<21.6)
+						{
+							$wind11[$i][$j]="a";
+						}
+						if($wind1[$i][$j]>=19 && $wind1[$i][$j]<24.2)
+						{
+							$wind11[$i][$j]="b";
+						}
+						if($wind1[$i][$j]>=24.2 && $wind1[$i][$j]<26.8)
+						{
+							$wind11[$i][$j]="c";
+						}
+						if($wind1[$i][$j]>=26.8 && $wind1[$i][$j]<29.3)
+						{
+							$wind11[$i][$j]="d";
+						}
+						if($wind1[$i][$j]>=29.3 && $wind1[$i][$j]<31.9)
+						{
+							$wind11[$i][$j]="e";
+						}
+						if($wind1[$i][$j]>=31.9 && $wind1[$i][$j]<34.5)
+						{
+							$wind11[$i][$j]="f";
+						}
+						if($wind1[$i][$j]>=34.5 && $wind1[$i][$j]<37)
+						{
+							$wind11[$i][$j]="g";
+						}
+						if($wind1[$i][$j]>=37 && $wind1[$i][$j]<39.6)
+						{
+							$wind11[$i][$j]="h";
+						}
+						if($wind1[$i][$j]>=39.6 && $wind1[$i][$j]<42.2)
+						{
+							$wind11[$i][$j]="i";
+						}
+						if($wind1[$i][$j]>=42.2 && $wind1[$i][$j]<44.8)
+						{
+							$wind11[$i][$j]="j";
+						}
+						if($wind1[$i][$j]>=44.8 && $wind1[$i][$j]<47.3)
+						{
+							$wind11[$i][$j]="k";
+						}
+						if($wind1[$i][$j]>=47.3 && $wind1[$i][$j]<49.9)
+						{
+							$wind11[$i][$j]="l";
+						}
+						if($wind1[$i][$j]>=49.9 && $wind1[$i][$j]<52.5)
+						{
+							$wind11[$i][$j]="m";
+						}
+						if($wind1[$i][$j]>=52.5 && $wind1[$i][$j]<55)
+						{
+							$wind11[$i][$j]="n";
+						}
+						if($wind1[$i][$j]>=55 && $wind1[$i][$j]<57.6)
+						{
+							$wind11[$i][$j]="o";
+						}
+						if($wind1[$i][$j]>=57.6)
+						{
+							$wind11[$i][$j]="p";
+						}
+
+						$wind1[$i][$j]=$wind11[$i][$j];
+
+					}
+				}
+			}
+
+			return $wind1;
+		}
+		
+*/
+
+?>		

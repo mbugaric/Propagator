@@ -1,0 +1,404 @@
+body {
+	font-family:verdana, arial, sans-serif;
+	font-size:10pt;
+	color:#677d94;
+	background-color:#ebfce2;
+	margin: 0px
+}             
+.Copyright {
+	font-size: 10px; 
+	color: #ffffff; 
+	text-decoration: none
+}
+.mala {
+	font-size: 11px; 
+	text-decoration: none
+}
+.naslov{
+	font-family:verdana, arial, sans-serif;
+	font-size:12pt;
+	color:#686560;
+	font-weight: bold;
+}
+.tekst_mali{
+	font-family:verdana, arial, sans-serif;
+	font-size:14pt;color:#686560;
+	margin:5px
+}
+.tablica_siva{
+	background-color:#cccccc
+}
+.tablica_siva_2{
+	background-color:#eeeeee
+}
+.navigation_dropdown {
+	FONT-SIZE: 10pt; 
+	BACKGROUND: #336699; 
+	COLOR: #ffffff; 
+	FONT-FAMILY: Verdana, Geneva, Helvetica, Arial, sans-serif 
+}
+.quotes {
+	FONT-SIZE: 8pt; 
+	COLOR: #d3d3d3; 
+	FONT-FAMILY: Arial, Verdana, Geneva, Helvetica, Arial, sans-serif
+}
+.email {
+	FONT-SIZE: 8pt; 
+	COLOR: #7ba6b5; 
+	FONT-FAMILY: Verdana, Geneva, Helvetica, Arial, sans-serif
+}
+.button {
+	FONT-SIZE: 8pt; 
+	COLOR: #333333; 
+	FONT-FAMILY: Verdana, Geneva, Helvetica, Arial, sans-serif
+}
+.menu {
+	FONT: 8pt verdana; 
+	COLOR: #ffffff; 
+	TEXT-DECORATION: none
+}
+.menu:link {	
+	FONT: 8pt verdana; 
+	COLOR: #ffffff; 
+	TEXT-DECORATION: none
+}
+.menu:visited {	
+	FONT: 8pt verdana; 
+	COLOR: #ffffff; 
+	TEXT-DECORATION: none
+}
+.menu:hover {	
+	FONT: 8pt verdana; 
+	COLOR: #ffff00; 
+	TEXT-DECORATION: underline
+}
+A:link {
+	font-family:verdana, arial, sans-serif;
+	font-size: 10pt; 
+	TEXT-DECORATION: underline; 
+	COLOR:#000080
+}
+A:visited {
+	font-family:verdana, arial, sans-serif; 
+	font-size: 10pt; 
+	TEXT-DECORATION: underline
+}
+A:active {
+	font-size: 10pt
+}
+A:hover {
+	font-family:verdana, arial, sans-serif; 
+	font-size: 10pt; 
+	COLOR: #ff8c84; 
+	TEXT-DECORATION: underline
+}
+
+A.main:link {	
+	FONT: 10px verdana; 
+	COLOR: #677D94; 
+	TEXT-DECORATION: none;
+	font-weight:bold;
+}
+A.main:visited {	
+	FONT: 10px verdana; 
+	COLOR: #677D94; 
+	TEXT-DECORATION: none;
+	font-weight:bold;
+}
+A.main:hover {	
+	FONT: 10px verdana; 
+	COLOR: #ff8C84; 
+	TEXT-DECORATION: underline;
+	font-weight:bold;
+}
+A.Copyright:link  {
+	FONT-WEIGHT: normal; 
+	FONT-SIZE: 10px; 
+	COLOR: #ffffff; 
+	FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	TEXT-DECORATION: none
+}
+A.Copyright:visited  {
+	FONT-WEIGHT: normal; 
+	FONT-SIZE: 10px; 
+	COLOR: #ffffff; 
+	FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	TEXT-DECORATION: none
+}
+A.Copyright:active  {
+	FONT-WEIGHT: normal; 
+	FONT-SIZE: 10px; 
+	COLOR: #ffffff; 
+	FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	TEXT-DECORATION: none
+}
+A.Copyright:hover {
+	FONT-WEIGHT: normal; 
+	FONT-SIZE: 10px; COLOR: #ffffff; 
+	FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	TEXT-DECORATION: underline
+}
+
+TABLE.tblSeparator {
+	BORDER-BOTTOM: gray 1px solid
+}
+TD {
+	font-family:verdana, arial, sans-serif;
+	font-size:10pt; 
+	COLOR:#677d94;
+} 
+TD.tblSeparator {
+	BORDER-BOTTOM: gray 1px solid
+}
+TD.tblSeparatorRight {
+	BORDER-RIGHT: gray 1px solid
+}
+.inputNormal {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: normal; 
+	FONT-SIZE: 12pt; 
+	BORDER-LEFT: gray 1px solid; 
+	COLOR: black; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: "Courier New", Courier, mono; 
+	BACKGROUND-COLOR: #ffffff
+}
+.inputFocus {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: normal; 
+	FONT-SIZE: 12pt; 
+	BORDER-LEFT: gray 1px solid; 
+	COLOR: black; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: "Courier New", Courier, mono; 
+	BACKGROUND-COLOR: #eeeeee;
+}
+INPUT.inputMenu {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 10pt; 
+	MARGIN-BOTTOM: 3px; 
+	BORDER-LEFT: gray 1px solid; 
+	WIDTH: 100px; 
+	COLOR: black; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: Verdnana, Arial, Helvetica, sans-serif; 
+	HEIGHT: 25px; 
+	BACKGROUND-COLOR: #e7e7e7
+}
+INPUT.inputMenuOver {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 10pt; 
+	MARGIN-BOTTOM: 3px; 
+	BORDER-LEFT: gray 1px solid; 
+	COLOR: white; 
+	WIDTH: 100px; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: Verdnana, Arial, Helvetica, sans-serif; 
+	HEIGHT: 25px; 
+	BACKGROUND-COLOR: gray
+}
+INPUT.rucnoMenu {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	MARGIN-BOTTOM: 3px; 
+	BORDER-LEFT: gray 1px solid;  
+	COLOR: black; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: Arial, Helvetica, sans-serif; 
+	HEIGHT: 25px; 
+	BACKGROUND-COLOR: #e7e7e7
+}
+INPUT.rucnoMenuOver {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	MARGIN-BOTTOM: 3px; 
+	BORDER-LEFT: gray 1px solid;  
+	COLOR: white; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: Arial, Helvetica, sans-serif; 
+	HEIGHT: 25px; 
+	BACKGROUND-COLOR: gray
+}
+.inputNormal {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: normal; 
+	FONT-SIZE: 12pt; 
+	BORDER-LEFT: gray 1px solid; 
+	COLOR: black; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: "Courier New", Courier, mono; 
+	BACKGROUND-COLOR: #ffffff
+}
+.inputFocus {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: normal; 
+	FONT-SIZE: 12pt; 
+	BORDER-LEFT: gray 1px solid; 
+	COLOR: black; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: "Courier New", Courier, mono; 
+	BACKGROUND-COLOR: #eeeeee
+}
+/* Ispis alarma */
+th.alarmi {
+	background-color:#677d94; color:#ffffff; font-size:12px;
+}
+td.alarmi {
+	background-color:#cff1e6; 
+}
+a.navigacija:link, a.navigacija:active, a.navigacija:visited {
+	color:#ffffff;
+	text-decoration:none;
+}
+a.navigacija:hover {
+	color: #ff8c84; 
+}
+.menutitle{
+cursor:pointer;
+margin-bottom: 5px;
+background-color:#E7E7E7;
+color:#000000;
+width:240px;
+padding:2px;
+text-align:center;
+font-weight:bold;
+border:1px solid #000000;
+}
+
+.menutitleOver {
+cursor:pointer;
+margin-bottom: 5px;
+background-color:gray;
+color:#ffffff;
+width:240px;
+padding:2px;
+text-align:center;
+font-weight:bold;
+border:1px solid #000000;
+}
+.submenu{
+margin-bottom: 0.5em;
+width:240px;
+padding:2px;
+border:1px solid #000000;
+}
+.menutitlekraci{
+cursor:pointer;
+margin-bottom: 5px;
+background-color:#E7E7E7;
+color:#000000;
+width:200px;
+padding:2px;
+text-align:center;
+font-weight:bold;
+border:1px solid #000000;
+}
+.menutitleOverkraci {
+cursor:pointer;
+margin-bottom: 5px;
+background-color:gray;
+color:#ffffff;
+width:200px;
+padding:2px;
+text-align:center;
+font-weight:bold;
+border:1px solid #000000;
+}
+.menuAlarmi{
+cursor:pointer;
+margin-bottom: 5px;
+/*background-color:#ff6666;*/
+background-image:url(../graphics/alarmi.gif);
+color:#ffffff;
+width:240px;
+padding:2px;
+text-align:center;
+font-weight:bold;
+border:1px solid #000000;
+}
+a.rucnoMenuOver {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	MARGIN-BOTTOM: 3px; 
+	PADDING-TOP:2px;
+	PADDING-BOTTOM:2px;
+	BORDER-LEFT: gray 1px solid;  
+	COLOR: white; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: Arial, Helvetica, sans-serif; 
+	HEIGHT: 25px; 
+	BACKGROUND-COLOR: gray;
+	text-decoration:none
+}
+a.rucnoMenu {
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 12px; 
+	MARGIN-BOTTOM: 3px; 
+	PADDING-TOP:2px;
+	PADDING-BOTTOM:2px;
+	BORDER-LEFT: gray 1px solid;  
+	COLOR: black; 
+	BORDER-BOTTOM: gray 1px solid; 
+	FONT-FAMILY: Arial, Helvetica, sans-serif; 
+	HEIGHT: 25px; 
+	BACKGROUND-COLOR: #e7e7e7;
+	text-decoration:none;
+}
+
+.gisedit_table{
+	position: relative;
+	BACKGROUND-COLOR: #ebfce2;
+	z-index: 1;
+}
+.gisedit_confirmation{
+	position: absolute;
+	BACKGROUND-COLOR: black;
+	z-index: 2;
+	top: 70%;
+}
+.gisedit_slika{
+	position: relative;
+	z-index: 1;
+
+}
+.gisedit_points{
+	position: absolute;
+	BACKGROUND-COLOR: #ebfce2;
+	width:20%;
+	right:2%;
+	bottom:0%;
+	padding : 4px; 
+	width : 150px; 
+	height : 400px; 
+	overflow : auto; 
+}
+
+#slikeLogo
+{
+	background-color: white;
+	width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#slikeLogo img
+{
+	height: 70px;
+	rgba(255,255,255,0) 
+}

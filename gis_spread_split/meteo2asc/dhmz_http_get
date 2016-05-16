@@ -1,0 +1,42 @@
+#!/bin/sh
+#dohvacanje DHZM
+
+while getopts "o:a:" opcije
+do
+        case $opcije in
+        o)      echo "OPCIJA o"
+                if [ -n "$OPTARG" ]
+                then
+		wget -N -O "/var/www/gis_spread/split_spread/meteo2asc/$OPTARG"  "http://radar.dhz.hr/~ivateks/FESB/$OPTARG" 
+		a=`ls -l "/var/www/gis_spread/split_spread/meteo2asc/$OPTARG" | awk '{ print $6 }'`;
+		b=`date +"%Y-%m-%d"`;
+		if [ -s "/var/www/gis_spread/split_spread/meteo2asc/$OPTARG" ] && [ $a == $b ] 
+		then 
+		echo "lol"
+		cp "/var/www/gis_spread/split_spread/meteo2asc/$OPTARG" "/var/www/gis_spread/split_spread/meteo2asc/$OPTARG.bck"
+		else 
+
+if [ $OPTARG == "fesb.wind.00" ]
+then
+  cp "/var/www/gis_spread/split_spread/meteo2asc/fesb.wind.12.bck" "/var/www/gis_spread/split_spread/meteo2asc/$OPTARG"
+fi
+
+if [ $OPTARG == "fesb.wind.12" ]
+then
+  cp "/var/www/gis_spread/split_spread/meteo2asc/fesb.wind.00.bck" "/var/www/gis_spread/split_spread/meteo2asc/$OPTARG"
+fi
+		
+		fi
+		else
+			echo "greska"
+                fi;;
+	a)	echo "OPCIJA a"
+                if [ -n "$OPTARG" ]
+                then
+               wget --http-user=duzs --http-passwd=ilica89 -N -O "/var/www/gis_spread/split_spread/meteo2asc/$OPTARG"  "http://radar.dhz.hr/~duzs/$OPTARG" 
+		else
+			echo "greska"				
+		fi;;
+           *)     echo "Nepoznata opcija";;
+        esac
+done
