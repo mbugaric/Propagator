@@ -1,0 +1,219 @@
+.blink_me_1 {
+	/*animation: blinker 7s step-end infinite;*/
+    -o-transition:.5s !important;
+    -ms-transition:.5s !important;
+    -moz-transition:.5s !important;
+    -webkit-transition:.5s !important;
+    /* ...and now for the proper property */
+    transition:.5s !important;
+	webkit-animation-name: blinker_1;
+    webkit-animation-duration: 2s;
+	webkit-animation-iteration-count: infinite;
+	moz-animation-name: blinker_1;
+	moz-animation-duration: 2s;
+	moz-animation-iteration-count: infinite;
+	animation-name: blinker_1;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+  }
+.blink_me_2 {
+	/*animation: blinker 7s step-end infinite;*/
+    -o-transition:.5s !important;
+    -ms-transition:.5s !important;
+    -moz-transition:.5s !important;
+    -webkit-transition:.5s !important;
+    /* ...and now for the proper property */
+    transition:.5s !important;
+	webkit-animation-name: blinker_2;
+    webkit-animation-duration: 2s;
+	webkit-animation-iteration-count: infinite;
+	moz-animation-name: blinker_2;
+	moz-animation-duration: 2s;
+	moz-animation-iteration-count: infinite;
+	animation-name: blinker_2;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+  }
+.blink_me_3 {
+	/*animation: blinker 7s step-end infinite;*/
+    -o-transition:.5s !important;
+    -ms-transition:.5s !important;
+    -moz-transition:.5s !important;
+    -webkit-transition:.5s !important;
+    /* ...and now for the proper property */
+    transition:.5s !important;
+	webkit-animation-name: blinker_3;
+    webkit-animation-duration: 2s;
+	webkit-animation-iteration-count: infinite;
+	moz-animation-name: blinker_3;
+	moz-animation-duration: 2s;
+	moz-animation-iteration-count: infinite;
+	animation-name: blinker_3;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+  }
+.blink_me_4 {
+	/*animation: blinker 7s step-end infinite;*/
+    -o-transition:.5s !important;
+    -ms-transition:.5s !important;
+    -moz-transition:.5s !important;
+    -webkit-transition:.5s !important;
+    /* ...and now for the proper property */
+    transition:.5s !important;
+	webkit-animation-name: blinker_4;
+    webkit-animation-duration: 2s;
+	webkit-animation-iteration-count: infinite;
+	moz-animation-name: blinker_4;
+	moz-animation-duration: 2s;
+	moz-animation-iteration-count: infinite;
+	animation-name: blinker_4;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+  }
+.blink_me_5 {
+	/*animation: blinker 7s step-end infinite;*/
+    -o-transition:.5s !important;
+    -ms-transition:.5s !important;
+    -moz-transition:.5s !important;
+    -webkit-transition:.5s !important;
+    /* ...and now for the proper property */
+    transition:.5s !important;
+	webkit-animation-name: blinker_5;
+    webkit-animation-duration: 2s;
+	webkit-animation-iteration-count: infinite;
+	moz-animation-name: blinker_5;
+	moz-animation-duration: 2s;
+	moz-animation-iteration-count: infinite;
+	animation-name: blinker_5;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+  }   
+  
+/*@keyframes blinker { 0% {background-color: white;}
+14% {background-color: inherit;} 28%{background-color:white;}42%{background-color:inherit;}56%{background-color:white;}61%{background-color:inherit;}
+
+}
+@-webkit-keyframes blinker { 0% {background-color: white;}
+14% {background-color: inherit;} 28%{background-color:white;}42%{background-color:inherit;}56%{background-color:white;}61%{background-color:inherit;}
+
+}
+@-moz-keyframes blinker {0% {background-color: white;}
+14% {background-color:inherit;} 28%{background-color:white;}42%{background-color:inherit;}56%{background-color:white;}61%{background-color:inherit;}
+
+}*/
+
+@-webkit-keyframes blinker_1 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #99ffff; -webkit-box-shadow: inset 0 0 22px #00CCCC; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@-moz-keyframes blinker_1 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #99ffff; -webkit-box-shadow: inset 0 0 22px #00CCCC;}
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@keyframes blinker_1 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #99ffff; -webkit-box-shadow: inset 0 0 22px #00CCCC; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+
+@-webkit-keyframes blinker_2 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #99ff99; -webkit-box-shadow: inset 0 0 22px #66CC33; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@-moz-keyframes blinker_2 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #99ff99; -webkit-box-shadow: inset 0 0 22px #66CC33;}
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@keyframes blinker_2 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #99ff99; -webkit-box-shadow: inset 0 0 22px #66CC33; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+
+@-webkit-keyframes blinker_3 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #ffffcc; -webkit-box-shadow: inset 0 0 22px #FFCC33; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@-moz-keyframes blinker_3 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #ffffcc; -webkit-box-shadow: inset 0 0 22px #FFCC33;}
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@keyframes blinker_3 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #ffffcc; -webkit-box-shadow: inset 0 0 22px #FFCC33; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+
+@-webkit-keyframes blinker_4 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #ffeecc; -webkit-box-shadow: inset 0 0 22px orange; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@-moz-keyframes blinker_4 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #ffeecc; -webkit-box-shadow: inset 0 0 22px orange;}
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@keyframes blinker_4 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #ffeecc; -webkit-box-shadow: inset 0 0 22px orange; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+
+@-webkit-keyframes blinker_5 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #ff9999; -webkit-box-shadow: inset 0 0 22px #FF0033; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@-moz-keyframes blinker_5 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #ff9999; -webkit-box-shadow: inset 0 0 22px #FF0033;}
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+@keyframes blinker_5 {
+    from { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+    50% { background-color: #ff9999; -webkit-box-shadow: inset 0 0 22px #FF0033; }
+    to { background-color: inherit; -webkit-box-shadow: inset 0 0 0px #333; }
+}
+
+
+
+
+.popover.fade
+{
+	background-color: red;
+	width: 0px;
+	height: 0px;
+	left: -50px !important;
+	top: 100px !important;
+	opacity: 0;
+  -o-transition:.5s !important;
+  -ms-transition:.5s !important;
+  -moz-transition:.5s !important;
+  -webkit-transition:.5s !important;
+  /* ...and now for the proper property */
+  transition:.5s !important;
+}
+
+.popover-content
+{
+	left:0px;
+	color: black;
+}
+
+.slika h6
+{
+	margin-bottom: -171px;
+    background-color: white;
+    height: 20px;
+    margin-left: 50px;
+    width: 188px;
+    padding-left: 110px;
+    border: 1px solid black;
+}

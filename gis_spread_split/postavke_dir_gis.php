@@ -124,6 +124,7 @@ $languagesList=array();
 	$customFuelMapsAttributeName="kod";	
 	$corineRulesFilenameAlbini="reclass_Albini.r";
 	$corineRulesFilenameScott="reclass_Scott.r";
+	$corineRulesNewForCustomFuelMaps="reclass_customFuelMaps.r";
 	
 	$calculate_ROS_enabled = false;
 	
@@ -231,10 +232,10 @@ include_once ($web_dir."/gis_spread_split/postavke_jezik.php");*/
 //include_once("./languages/en.php");
 
 # Ip adresa servera
-//$SajaxAppendix = "/propagator/"; 				//Ukoliko je putanja javne IP adrese drugačija... npr: lokalno http://10.80.1.14/ a javno: http://185.46.34.40/propagator/, ispod se provjerava je li lokalna adresa ili javna pa se poništava ako nije
+//$SajaxAppendix = "/propagator/"; 				//Ukoliko je putanja javne IP adrese drugačija... npr: lokalno http://10.80.1.14/ a javno: http://propagator.adriaholistic.eu/propagator/, ispod se provjerava je li lokalna adresa ili javna pa se poništava ako nije
 $SajaxAppendix = "";
-$ip_servera = "185.46.34.40".$SajaxAppendix; 	//$_SERVER['SERVER_ADDR'];
-$ip_servera_local="10.80.1.14"; 				//U sajaxu se koristi radi provjere
+$ip_servera = "propagator.adriaholistic.eu".$SajaxAppendix; 	//$_SERVER['SERVER_ADDR'];
+$ip_servera_local="propagator.adriaholistic.eu"; 				//U sajaxu se koristi radi provjere
 	
 /*
 # Konfiguracijski file postgres baze podrazumijeva se da je u root direktoriju web servera

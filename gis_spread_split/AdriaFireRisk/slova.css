@@ -1,0 +1,106 @@
+.popover-content .slika{
+	width:300px;
+	height:313px;
+}
+.popover-content .container {
+    width: 300px;
+    height: 300px;
+    margin-left: 50px;
+    position: absolute;
+	float:bottom;
+	clip: rect(0px, 300px, 150px, 0px);
+}
+
+.popover-content .panel {
+  width: 300px;
+  height: 150px;
+  position: absolute;
+  border-radius: 300px 300px 0px 0px;
+  transform-origin: center bottom;
+  -moz-transform-origin: center bottom;
+  -webkit-transform-origin: center bottom;
+}
+.popover-content .one {background-color: #00CCCC;}
+.popover-content .two {background-color: #66CC33;}
+.popover-content .three {background-color: #FFCC33;}
+.popover-content .four {background-color:orange;}
+.popover-content .five {background-color:#FF0033;}
+.popover-content .rizik1 { 
+  background-color: #00CCCC;
+  -webkit-transform:rotate(0deg);
+  -moz-transform:rotate(deg);
+  transform:rotate(deg);
+}
+.popover-content .rizik2 { 
+  background-color: #66CC33;
+  -webkit-transform:rotate(36deg);
+  -moz-transform:rotate(36deg);
+  transform:rotate(36deg);
+}
+.popover-content .rizik3 { 
+  background-color: #FFCC33;
+  -webkit-transform:rotate(72deg);
+  -moz-transform:rotate(72deg);
+  transform:rotate(72deg);
+}
+.popover-content .rizik4 { 
+  background-color: orange;
+  -webkit-transform:rotate(108deg);
+  -moz-transform:rotate(108deg);
+  transform:rotate(108deg);
+}
+.popover-content .rizik5 { 
+  background-color: #FF0033;
+  -webkit-transform:rotate(144deg);
+  -moz-transform:rotate(144deg);
+  transform:rotate(144deg);
+}
+
+.popover-content h1{
+	color:white;
+	font-size:13px;
+	padding-top:125px;
+	padding-left:10px;
+	text-shadow:3px 3px 15px black;
+}
+.popover-content h2{
+	color:white;
+	font-size:13px;
+	padding-top:123px;
+	padding-left:10px;
+	text-shadow:3px 3px 15px black;
+}
+.popover-content h3{
+	color:white;
+	font-size:13px;
+	padding-top:121px;
+	padding-left:10px;
+	text-shadow:3px 3px 15px black;
+}
+.popover-content h4{
+	color:white;
+	font-size:13px;
+	-webkit-transform:rotate(-144deg);
+    -moz-transform:rotate(-144deg);
+    transform:rotate(-144deg);
+	padding-bottom:124px;
+	padding-left:199px;
+	text-shadow:3px 3px 15px black;
+}
+.popover-content h5{
+	color:white;
+	font-size:13px;
+	-webkit-transform:rotate(-144deg);
+    -moz-transform:rotate(-144deg);
+    transform:rotate(-144deg);
+	padding-bottom:117px;
+	padding-left:160px;
+	text-shadow:3px 3px 15px black;
+}
+.popover-content h6{
+	height:13px;
+	width:300px;
+	font-size:13px;
+	float:top;
+	padding-left:90px;
+}

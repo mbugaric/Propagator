@@ -3,8 +3,8 @@
 ?>
 
 <?php
-/*
-ini_set('display_errors', 'On');
+
+/*ini_set('display_errors', 'On');
 error_reporting(E_ALL);*/
 
 /*ini_set('max_input_time', 60);
@@ -342,6 +342,7 @@ if($korisnik!="")
 		corineRulesFilenameScott = '<?php echo "$WebDir/user_files/$korisnik/$corineRulesFilenameScott"; ?>';
 		corineRulesFilenameAlbiniDefault = '<?php echo "$WebDir/files/$corineRulesFilenameAlbini"; ?>';
 		corineRulesFilenameScottDefault = '<?php echo "$WebDir/files/$corineRulesFilenameScott"; ?>';
+		corineRulesNewForCustomFuelMaps = '<?php echo "$WebDir/user_files/$korisnik/$corineRulesNewForCustomFuelMaps"; ?>';
 		corineAttributeName = "<?php echo $corineAttributeName; ?>";
 		customFuelMapsAttributeName = "<?php echo $customFuelMapsAttributeName; ?>";
 		meteoArchiveDir = "<?php echo $meteoArchiveDir; ?>";
@@ -409,13 +410,14 @@ if($korisnik!="")
 			
 			//check if custom fuel models need to be regenerated
 			x_checkIfCustomFuelModelVectorsExist(WebDir, korisnik, rastForModelAlbini, rastForModelScott, doAfterCheckIfCustomFuelModelVectorsExist);
-			
+
 		}
+		
 		
 		
 		function doAfterCheckIfCustomFuelModelVectorsExist(result)
 		{
-			
+			//alert(result)
 			//fuels need to be recalculated
 			//Uncomment this to force fuel recalculation
 			//result=false;
@@ -433,7 +435,6 @@ if($korisnik!="")
 				  }
 				  else
 				  {
-					  
 					  swal({
 							title: "<?php echo _GIS_ARESURE; ?>",
 							text: "<?php echo _GIS_FUEL_DIALOG; ?>",
@@ -450,7 +451,7 @@ if($korisnik!="")
 										//alert(context_menu_one);
 										//context_menu_one[2]["<?php echo _GIS_TRENUTNA_SIMULACIJA;?>"].disabled=true;
 										//context_menu_one[3]["<?php echo _GIS_VLASTITA_SIMULACIJA;?>"].disabled=true;
-										x_generateScriptForCustomModels(WebDir, korisnik, rastForModelAlbini, rastForModelScott, corineRulesFilenameAlbini, corineRulesFilenameScott, customFuelMapsAttributeName, rastForRegion, grassmapset, WebDirGisData, doAfterFuelModelsGenerated);
+										x_generateScriptForCustomModels(WebDir, korisnik, rastForModelAlbini, rastForModelScott, corineRulesFilenameAlbini, corineRulesFilenameScott, corineRulesNewForCustomFuelMaps, customFuelMapsAttributeName, rastForRegion, grassmapset, WebDirGisData, doAfterFuelModelsGenerated);
 
 									} 
 							});
@@ -707,7 +708,7 @@ if($korisnik!="")
 								//alert(context_menu_one);
 								//context_menu_one[2]["<?php echo _GIS_TRENUTNA_SIMULACIJA;?>"].disabled=true;
 								context_menu_one[3]["<?php echo _GIS_VLASTITA_SIMULACIJA;?>"].disabled=true;
-								x_generateScriptForCustomModels(WebDir, korisnik, rastForModelAlbini, rastForModelScott, corineRulesFilenameAlbini, corineRulesFilenameScott, customFuelMapsAttributeName, rastForRegion, grassmapset,  WebDirGisData, doAfterFuelModelsGenerated);
+								x_generateScriptForCustomModels(WebDir, korisnik, rastForModelAlbini, rastForModelScott, corineRulesFilenameAlbini, corineRulesFilenameScott, corineRulesNewForCustomFuelMaps, customFuelMapsAttributeName, rastForRegion, grassmapset,  WebDirGisData, doAfterFuelModelsGenerated);
 
 							} 
 					});

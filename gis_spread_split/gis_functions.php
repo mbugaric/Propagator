@@ -581,6 +581,12 @@ function prepareAllUserData($WebDir, $WebDirGisData, $korisnik, $grasslocation, 
 		chmod($WebDir."/user_files/$korisnik/reclass_Scott.r", 0777);
 	}
 	
+	if(!file_exists($WebDir."/user_files/$korisnik/reclass_customFuelMaps.r"))
+	{
+		copy($WebDir."/userdefault/reclass_customFuelMaps.r", $WebDir."/user_files/$korisnik/reclass_customFuelMaps.r");
+		chmod($WebDir."/user_files/$korisnik/reclass_customFuelMaps.r", 0777);
+	}
+	
 	if(!file_exists($WebDir."/user_files/$korisnik/reclass_Albini.r"))
 	{
 		copy($WebDir."/userdefault/reclass_Albini.r", $WebDir."/user_files/$korisnik/reclass_Albini.r");
@@ -808,6 +814,8 @@ $crontabText="#CRONTAB file automatically generated using gis_functions
 #Get wind, prec, TRH2m data
 #AdriaFireGIS returns false results if started at 00
 10,30 * * * * php $meteoArchiveDir/getMeteoDataHolistic.php
+09,29 * * * * $meteoArchiveDir/corfu_launch.sh
+10 */2 * * * php $meteoArchiveDir/getMeteoData4CorfuHolistic.php
 00 14 * * * php \"$meteoArchiveDir/checkMeteoObtainWorksHolistic.php\"
 #Calculate FWI components
 12 2,5,8,11,14,17,20,23 * * * php $meteoArchiveDir/calculateFWI.php
@@ -827,7 +835,10 @@ $crontabText="#CRONTAB file automatically generated using gis_functions
 29 * * * * php \"$WebDir/MIRIP/generateXML.php\" \"$WebDir/MIRIP/HR_Split_Marjan_1.txt\" \"$WebDir/MIRIP/HR_Split_Marjan_1.xml\"
 #Ovo treba ic u root crontab
 #29 * * * * php \"$WebDir/MIRIP/checkPaneIsWorking.php\"
-
+#Nova verzija panela
+00,15,30,45 * * * * php \"$WebDir/panels/generateShellForXML.php\"
+01,16,31,46 * * * * $WebDir/panels/generateXML_launch.sh
+02,17,32,47 * * * * php \"$WebDir/panels/generateXML.php\"
 
 ";
 

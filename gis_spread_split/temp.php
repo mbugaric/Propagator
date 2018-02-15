@@ -64,12 +64,51 @@ array_push($users, "nnarda");
 array_push($users, "afurlan");
 array_push($users, "smichos");
 array_push($users, "nmijanovic");
+array_push($users, "panels1");
+array_push($users, "hvarcase");
+array_push($users, "lastovocase");
+array_push($users, "ljiljana");
+array_push($users, "ioannouFB14");
+array_push($users, "aprimiero");
+array_push($users, "istraCounty");
+array_push($users, "splitCounty");
+array_push($users, "sibenikCounty");
+array_push($users, "ForestDeptCorfu");
+array_push($users, "FireFighterCorfu");
+array_push($users, "prvitreptac");
+array_push($users, "kamir");
+array_push($users, "corfupanels");
+array_push($users, "ddukic");
+array_push($users, "OiV");
+array_push($users, "upravahnz");
+array_push($users, "Baksic");
+array_push($users, "zsutlar");
+
 
 $pass=array();
 array_push($pass, "apdhu76a");
 array_push($pass, "7f3490fg");
 array_push($pass, "945bc02k");
-array_push($pass, "3jkg734n");
+array_push($pass, "3jkg734kgn");
+array_push($pass, "3jkg734kgn");
+array_push($pass, "hvarcase");
+array_push($pass, "lastovocase");
+array_push($pass, "ljiljana1700");
+array_push($pass, "l3jhg73hrf");
+array_push($pass, "a908askdj");
+array_push($pass, "dfistra933");
+array_push($pass, "spl74hf");
+array_push($pass, "sib7g4ni");
+array_push($pass, "stDeptC23hu");
+array_push($pass, "eFight4j389d");
+array_push($pass, "hufd36s");
+array_push($pass, "sd8923jk");
+array_push($pass, "asd87wek3");
+array_push($pass, "34nso7d");
+array_push($pass, "v32di4o");
+array_push($pass, "ao3g6nn");
+array_push($pass, "dj3a8fh");
+array_push($pass, "jfu4hdr");
 
 for($counter=0; $counter<count($users); $counter++) {
     $username=$users[$counter];
@@ -79,6 +118,9 @@ for($counter=0; $counter<count($users); $counter++) {
 	//echo $username.":".$username."<br />";
 }
 
+
+/*$password=hash_hmac('ripemd160',"3jkg734kgn","AdriaProp");
+echo $password;*/
 
 //echo hash_hmac('ripemd160',"pass21","AdriaProp");
 

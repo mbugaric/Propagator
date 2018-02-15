@@ -3,6 +3,8 @@
 #Get wind, prec, TRH2m data
 #AdriaFireGIS returns false results if started at 00
 10,30 * * * * php /home/holistic/meteoArhiva//getMeteoDataHolistic.php
+09,29 * * * * /home/holistic/meteoArhiva//corfu_launch.sh
+10 */2 * * * php /home/holistic/meteoArhiva//getMeteoData4CorfuHolistic.php
 00 14 * * * php "/home/holistic/meteoArhiva//checkMeteoObtainWorksHolistic.php"
 #Calculate FWI components
 12 2,5,8,11,14,17,20,23 * * * php /home/holistic/meteoArhiva//calculateFWI.php
@@ -22,5 +24,8 @@
 29 * * * * php "/home/holistic/webapp/gis_spread_split/MIRIP/generateXML.php" "/home/holistic/webapp/gis_spread_split/MIRIP/HR_Split_Marjan_1.txt" "/home/holistic/webapp/gis_spread_split/MIRIP/HR_Split_Marjan_1.xml"
 #Ovo treba ic u root crontab
 #29 * * * * php "/home/holistic/webapp/gis_spread_split/MIRIP/checkPaneIsWorking.php"
-
+#Nova verzija panela
+00,15,30,45 * * * * php "/home/holistic/webapp/gis_spread_split/panels/generateShellForXML.php"
+01,16,31,46 * * * * /home/holistic/webapp/gis_spread_split/panels/generateXML_launch.sh
+02,17,32,47 * * * * php "/home/holistic/webapp/gis_spread_split/panels/generateXML.php"
 

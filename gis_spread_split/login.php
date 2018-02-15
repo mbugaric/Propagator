@@ -171,7 +171,6 @@ function preSubmit() {
 			</div>
 		  </TD>
         </TR>	
-		
           <TR> 
             <TD COLSPAN="2"><div align="center"><?php echo _NATPIS_UPOZORENJE?></div></TD>
         </TR>
@@ -180,8 +179,9 @@ function preSubmit() {
         </TR>
         <TR>
 		<TD COLSPAN="2" ALIGN="center"><IMG SRC="gif/spacer.gif" WIDTH="10" HEIGHT="5"></TD>
-        </TR>
+		</TR>
       </TABLE>
+	  <a href="http://propagator.adriaholistic.eu/AdriaFireRisk/">AdriaFireRisk</a>
     </TD>
   </TR>
 <INPUT 

@@ -105,9 +105,12 @@ g.remove -f rast=Corine_raster
 
 
 
-
-function generateScriptForCustomModels($WebDir, $korisnik, $rastForModelAlbini, $rastForModelScott, $corineRulesFilenameAlbini, $corineRulesFilenameScott, $corineAttributeName, $rastForRegion, $grassmapset, $WebDirGisData )
+//CUSTOM MAPS ARE DISABLED FOR NOW
+function generateScriptForCustomModels($WebDir, $korisnik, $rastForModelAlbini, $rastForModelScott, $corineRulesFilenameAlbini, $corineRulesFilenameScott, $corineRulesNewForCustomFuelMaps, $corineAttributeName, $rastForRegion, $grassmapset, $WebDirGisData )
 {
+	$shouldDisableCustomFromAFGIS = true;
+	
+	//echo 'alert("'.$corineRulesNewForCustomFuelMaps.'");';
 	
 	//prvo dohvatit nove podatke
 	
@@ -128,26 +131,12 @@ function generateScriptForCustomModels($WebDir, $korisnik, $rastForModelAlbini, 
 g.mapset mapset=$korisnik
 ";
 	
-	//if($mapaAlbini!="")
-	if(file_exists($mapaAlbini) && filesize($mapaAlbini) > 200)
-	{		
-		//verzija gdje je potreban reclass
-		/*$textForModelGeneration.="
-#Corine-Albini
-g.remove -f rast=$rastForModelAlbini
-g.remove -f vect=Corine_$rastForModelAlbini
-g.remove -f rast=Corine_raster_$rastForModelAlbini
-v.in.ogr dsn=$mapaAlbini output=Corine_$rastForModelAlbini --overwrite
-
-g.region vect=Corine_$rastForModelAlbini
-v.to.rast --verbose --overwrite input=Corine_$rastForModelAlbini output=Corine_raster_$rastForModelAlbini use=attr column=$corineAttributeName
-r.reclass input=Corine_raster_$rastForModelAlbini --overwrite output=$rastForModelAlbini rules=$corineRulesFilenameAlbini
 	
-g.remove -f vect=$rastForModelAlbini"."_vector
-r.to.vect --verbose --overwrite input=$rastForModelAlbini output=$rastForModelAlbini"."_vector feature=area
+	
+	//if($mapaAlbini!="")
+	if(file_exists($mapaAlbini) && filesize($mapaAlbini) > 200 && !$shouldDisableCustomFromAFGIS)
+	{		
 
-v.out.ogr input=$rastForModelAlbini"."_vector type=area dsn=$WebDir/user_files/$korisnik/vector/ olayer=$rastForModelAlbini layer=1 format=ESRI_Shapefile --overwrite
-";*/
 
 	$textForModelGeneration.="
 #Corine-Albini
@@ -156,9 +145,11 @@ g.remove -f vect=Corine_$rastForModelAlbini
 g.remove -f rast=Corine_raster_$rastForModelAlbini
 v.in.ogr dsn=$mapaAlbini output=Corine_$rastForModelAlbini --overwrite
 
+
 g.region vect=Corine_$rastForModelAlbini res=10
-v.to.rast --verbose --overwrite input=Corine_$rastForModelAlbini output=$rastForModelAlbini use=attr column=$corineAttributeName
-r.mapcalc \"$rastForModelAlbini = int($rastForModelAlbini)\"
+v.to.rast --verbose --overwrite input=Corine_$rastForModelAlbini output=temp_$rastForModelAlbini use=attr column=$corineAttributeName
+r.mapcalc \"temp_$rastForModelAlbini = int(temp_$rastForModelAlbini)\"
+r.reclass input=temp_$rastForModelAlbini --overwrite output=$rastForModelAlbini rules=$corineRulesNewForCustomFuelMaps
 	
 g.remove -f vect=$rastForModelAlbini"."_vector
 r.to.vect --verbose --overwrite input=$rastForModelAlbini output=$rastForModelAlbini"."_vector feature=area
@@ -192,27 +183,9 @@ g.copy rast=$rastForModelAlbini@$grassmapset,$rastForModelAlbini
 	}
 	
 		
-	if(file_exists($mapaScott) && filesize($mapaScott) > 200 )
+	if(file_exists($mapaScott) && filesize($mapaScott) > 200  && !$shouldDisableCustomFromAFGIS)
 	{
-		//verzija gdje je potreban reclass
-		/*$textForModelGeneration.="
-#Corine-Scott
-g.remove -f rast=$rastForModelScott
-g.remove -f vect=Corine_$rastForModelScott
-g.remove -f rast=Corine_raster_$rastForModelScott
-v.in.ogr dsn=$mapaScott output=Corine_$rastForModelScott --overwrite
 
-g.region vect=Corine_$rastForModelScott
-v.to.rast --verbose --overwrite input=Corine_$rastForModelScott output=Corine_raster_$rastForModelScott use=attr column=$corineAttributeName
-r.reclass input=Corine_raster_$rastForModelScott --overwrite output=$rastForModelScott rules=$corineRulesFilenameScott
-
-g.remove -f vect=$rastForModelScott"."_vector
-r.to.vect --verbose --overwrite input=$rastForModelScott output=$rastForModelScott"."_vector feature=area
-
-v.out.ogr input=$rastForModelScott"."_vector type=area dsn=$WebDir/user_files/$korisnik/vector/ olayer=$rastForModelScott layer=1 format=ESRI_Shapefile --overwrite
-
-
-	";*/
 	$textForModelGeneration.="
 #Corine-Scott
 g.remove -f rast=$rastForModelScott
@@ -221,8 +194,10 @@ g.remove -f rast=Corine_raster_$rastForModelScott
 v.in.ogr dsn=$mapaScott output=Corine_$rastForModelScott --overwrite
 
 g.region vect=Corine_$rastForModelScott res=10;
-v.to.rast --verbose --overwrite input=Corine_$rastForModelScott output=$rastForModelScott use=attr column=$corineAttributeName
-r.mapcalc \"$rastForModelScott = int($rastForModelScott)\"
+v.to.rast --verbose --overwrite input=Corine_$rastForModelScott output=temp_$rastForModelScott use=attr column=$corineAttributeName
+r.mapcalc \"temp_$rastForModelScott = int(temp_$rastForModelScott)\"
+r.reclass input=temp_$rastForModelScott --overwrite output=$rastForModelScott rules=$corineRulesNewForCustomFuelMaps
+
 
 g.remove -f vect=$rastForModelScott"."_vector
 r.to.vect --verbose --overwrite input=$rastForModelScott output=$rastForModelScott"."_vector feature=area
@@ -258,7 +233,7 @@ g.copy rast=$rastForModelScott@$grassmapset,$rastForModelScott
 
 	}
 
-
+	
 
 
 	writeToFile($textForModelGeneration, $WebDir."/user_files/$korisnik/exportModelsFromCorine.sh");
@@ -273,6 +248,24 @@ g.copy rast=$rastForModelScott@$grassmapset,$rastForModelScott
 		ob_flush;
 		flush();
 	}
+	
+	
+	/*$filename1="$WebDir/user_files/$korisnik/vector/$rastForModelAlbini.shp";
+	$filename2="$WebDir/user_files/$korisnik/vector/$rastForModelScott.shp";
+	if(!file_exists($filename1)){
+		//Albini
+		copy($WebDir."/userdefault/vector/modelAlbini.shp", "$WebDir/user_files/$korisnik/vector/$rastForModelAlbini.shp");
+		copy($WebDir."/userdefault/vector/modelAlbini.dbf", "$WebDir/user_files/$korisnik/vector/$rastForModelAlbini.dbf");
+		copy($WebDir."/userdefault/vector/modelAlbini.prj", "$WebDir/user_files/$korisnik/vector/$rastForModelAlbini.prj");
+		copy($WebDir."/userdefault/vector/modelAlbini.shx", "$WebDir/user_files/$korisnik/vector/$rastForModelAlbini.shx");	
+	}	
+	if(!file_exists($filename2)){
+		//Scott
+		copy($WebDir."/userdefault/vector/modelScott.shp", "$WebDir/user_files/$korisnik/vector/$rastForModelScott.shp");
+		copy($WebDir."/userdefault/vector/modelScott.dbf", "$WebDir/user_files/$korisnik/vector/$rastForModelScott.dbf");
+		copy($WebDir."/userdefault/vector/modelScott.prj", "$WebDir/user_files/$korisnik/vector/$rastForModelScott.prj");
+		copy($WebDir."/userdefault/vector/modelScott.shx", "$WebDir/user_files/$korisnik/vector/$rastForModelScott.shx");	
+	}*/
 	
 	
 	$isSuccess = checkIfCustomFuelModelVectorsExist($WebDir, $korisnik, $rastForModelAlbini, $rastForModelScott, $WebDirGisData, $grassmapset);
@@ -302,6 +295,8 @@ function checkIfCustomFuelModelVectorsExist($WebDir, $korisnik, $rastForModelAlb
 	{
 		$first=true;
 	}
+
+	
 	
 	//Sad provjerit u GRASS-u
 	
@@ -359,7 +354,9 @@ g.list rast > '$WebDir/user_files/$korisnik/glistModels.log'
 	if($countModels>=2)
 		$second=true;
 	
-	//echo 'alert("'.$glistarray22[1].'");';
+	//echo 'console.log("'.$filename2."first: ".$first.", second: ".$second.", count: ".$countModels.'");';
+
+	
 	
 	if($first && $second)
 		return true;
@@ -441,7 +438,10 @@ g.list rast > '$WebDir/user_files/$korisnik/glistModels.log'
 	if($countModels>=2)
 		$second=true;
 	
+	$xxxx = $first && $second;
+	
 	//echo 'alert("'.$glistarray22[1].'");';
+
 	
 	if($first && $second)
 		return true;
@@ -508,7 +508,7 @@ function obtainNewCustomModelsFromServer($WebDir, $korisnik, $rastForModelAlbini
 	unlink("$WebDir/user_files/$korisnik/vector/$rastForModelAlbini.prj");
 	
 	
-	$serverWfs="http://10.80.1.13/wfs";
+	$serverWfs="http://gis.adriaholistic.eu/wfs";
 	$username=$korisnik;
 	/*if($korisnik=="admin") $username = "ajdovscina_editor"; */
 	
